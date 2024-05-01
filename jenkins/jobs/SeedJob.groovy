@@ -1,4 +1,3 @@
-
 folder('github') {
     displayName('github')
     description('Projects stored on github')
@@ -10,3 +9,14 @@ job('github/docker') {
   }
 }
 
+pipelineJob('job-name') {
+  definition {
+    cps {
+      script('''
+        @Library('globalPipelineLibraries')
+        templatePipeline(branch: 'main')
+      '''.stripIndent())
+      sandbox()     
+    }
+  }
+}
