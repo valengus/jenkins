@@ -7,11 +7,10 @@ def call(Map pipelineParams) {
       stage('INFO') {
         steps {
           script {
-            echo "branch - ${pipelineParams.branch}"
+            echo "Branch - ${pipelineParams.branch}"
           }
         }
       }
-
 
       stage('SCM') {
         steps {
@@ -22,7 +21,6 @@ def call(Map pipelineParams) {
       }
 
     }
-
   }
 
 }

@@ -3,11 +3,6 @@ folder('github') {
     description('Projects stored on github')
 }
 
-job('github/docker') {
-  steps {
-    shell('echo Hello World!')
-  }
-}
 
 pipelineJob('job-name') {
   definition {
