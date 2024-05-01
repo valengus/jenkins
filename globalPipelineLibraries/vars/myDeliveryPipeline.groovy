@@ -12,13 +12,7 @@ def call(Map pipelineParams) {
                 }
             }
 
-            stage('SCM') {
-                steps {
-                    script {
-                        echo "Cloning ${pipelineParams.branch}"
-                    }
-                }
-            }
+
 
 
         }
