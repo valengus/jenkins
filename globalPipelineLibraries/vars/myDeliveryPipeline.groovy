@@ -24,11 +24,15 @@ def call(Map pipelineParams) {
       stage('INFO') {
         steps {
           script {
+            echo "INFO: Changing directry to ${params.DOCKER_IMAGE}"
+
             dir("${params.DOCKER_IMAGE}") {
               echo "BRANCH - ${pipelineParams.branch}"
               echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
               sh "cat Dockerfile"
             }
+
+
           }
         }
       }
