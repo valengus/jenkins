@@ -8,7 +8,7 @@ pipelineJob('job-name') {
   definition {
     cps {
       script('''@Library('globalPipelineLibraries') _
-      myDeliveryPipeline(branch: 'main')
+      myDeliveryPipeline(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
       '''.stripIndent())
       sandbox()     
     }
