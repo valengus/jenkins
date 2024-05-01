@@ -13,8 +13,8 @@ pipelineJob('job-name') {
   definition {
     cps {
       script('''
-        @Library('globalPipelineLibraries')
-        templatePipeline(branch: 'main')
+      @Library('globalPipelineLibraries')
+      templatePipeline(branch: 'main')
       '''.stripIndent())
       sandbox()     
     }
