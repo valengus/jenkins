@@ -9,25 +9,26 @@ def call(Map pipelineParams) {
 
     stages {
 
-    stage('Checkout') {
-      steps {
-        cleanWs()
-        checkout([
-          $class: 'GitSCM',
-          doGenerateSubmoduleConfigurations: false,
-          userRemoteConfigs: [[ url: "${pipelineParams.git_url}" ]],
-          branches: [ [name: "${pipelineParams.branch}"] ]
-        ])
+      stage('Checkout') {
+        steps {
+          cleanWs()
+          checkout([
+            $class: 'GitSCM',
+            doGenerateSubmoduleConfigurations: false,
+            userRemoteConfigs: [[ url: "${pipelineParams.git_url}" ]],
+            branches: [ [name: "${pipelineParams.branch}"] ]
+          ])
+        }
       }
-    }
 
       stage('PREPARE') {
         steps {
           script {
-            echo "BRANCH - ${pipelineParams.branch}"
-            echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
-            sh "cd ${params.DOCKER_IMAGE} && ls"
-
+            dir("${params.DOCKER_IMAGE}") {
+              echo "BRANCH - ${pipelineParams.branch}"
+              echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
+              sh "cd ${params.DOCKER_IMAGE} && ls"
+            }
           }
         }
       }
@@ -35,6 +36,5 @@ def call(Map pipelineParams) {
 
     }
   }
-
 }
 
