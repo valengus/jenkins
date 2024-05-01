@@ -14,7 +14,7 @@ pipelineJob('job-name') {
     cps {
       script('''
       @Library('globalPipelineLibraries')
-      templatePipeline(branch: 'main')
+      template.createMyStandardDeclarativePipeline(someParam: 'myParam')
       '''.stripIndent())
       sandbox()     
     }
