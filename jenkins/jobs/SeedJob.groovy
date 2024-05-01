@@ -1,3 +1,4 @@
 @Library('globalPipelineLibraries') _
 
-templatePipeline(branch: 'main')
+log.info 'Starting'
+log.warning 'Nothing to do!'
