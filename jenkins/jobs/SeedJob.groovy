@@ -2,8 +2,6 @@
 import jenkins.model.*
 @Library('globalPipelineLibraries')
 
-template.createDeclarativePipeline(someParam: 'myParam')
-
 folder('github') { }
 
 def github_projects = [
