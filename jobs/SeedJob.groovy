@@ -4,7 +4,7 @@ folder('github') {
 }
 
 
-pipelineJob('job-name') {
+pipelineJob('github/docker') {
   definition {
     cps {
       script('''@Library('globalPipelineLibraries') _
