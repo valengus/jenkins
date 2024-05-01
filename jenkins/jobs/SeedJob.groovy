@@ -12,10 +12,7 @@ job('github/docker') {
 pipelineJob('job-name') {
   definition {
     cps {
-      script('''
-      #!/usr/bin/groovy
-      @Library(value='globalPipelineLibraries@master', changelog=false) _
-      
+      script('''@Library('globalPipelineLibraries')
       template.createMyStandardDeclarativePipeline(someParam: 'myParam')
       '''.stripIndent())
       sandbox()     
