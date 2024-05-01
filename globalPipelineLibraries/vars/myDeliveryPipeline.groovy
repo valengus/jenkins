@@ -21,13 +21,13 @@ def call(Map pipelineParams) {
         }
       }
 
-      stage('PREPARE') {
+      stage('INFO') {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
               echo "BRANCH - ${pipelineParams.branch}"
               echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
-              sh "cd ${params.DOCKER_IMAGE} && ls"
+              sh "cat Dockerfile"
             }
           }
         }
