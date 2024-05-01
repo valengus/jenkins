@@ -1,3 +1,3 @@
-@Library("globalPipelineLibraries@master") _
+@Library('globalPipelineLibraries')
 
 template.createDeclarativePipeline(someParam: 'myParam')

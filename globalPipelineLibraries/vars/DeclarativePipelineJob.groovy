@@ -1,3 +1,4 @@
+
 def createDeclarativePipeline(Map templateParams) {   
 
   pipeline {
