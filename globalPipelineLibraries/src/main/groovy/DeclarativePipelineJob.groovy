@@ -1,4 +1,4 @@
-def createMyStandardDeclarativePipeline(Map templateParams) {   
+def createDeclarativePipeline(Map templateParams) {   
 
   pipeline {
     agent any
@@ -24,5 +24,3 @@ def createMyStandardDeclarativePipeline(Map templateParams) {
   }
 
 }
-
-template.createMyStandardDeclarativePipeline(someParam: 'myParam')
