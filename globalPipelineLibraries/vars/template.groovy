@@ -2,9 +2,7 @@ def call(Map pipelineParams) {
 
   pipeline {
     agent any
-    parameters {
-      string(name: 'myInput', description: 'Some pipeline parameters')
-    }
+
     stages {
       stage('Stage one') {
         steps {
@@ -13,13 +11,7 @@ def call(Map pipelineParams) {
           }
         }
       }
-      stage('Stage two') {
-        steps {
-          script {
-            echo "Job input parameter: " + params.myInput
-          }
-        }
-      }
+
     }
   }
 
