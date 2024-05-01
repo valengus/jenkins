@@ -26,8 +26,8 @@ def call(Map pipelineParams) {
           script {
             echo "BRANCH - ${pipelineParams.branch}"
             echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
-            sh "cd ${params.DOCKER_IMAGE}"
-            sh "ls"
+            sh "cd ${params.DOCKER_IMAGE} && ls"
+
           }
         }
       }
