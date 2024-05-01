@@ -2,8 +2,6 @@
 import jenkins.model.*
 @Library('globalPipelineLibraries')
 
-folder('github') { }
-
 def github_projects = [
   "docker"
 ]
@@ -12,7 +10,7 @@ github_projects.each {
   service = it
   println("${service}")
 
-  pipelineJob("github/${service}") {
+  pipelineJob("${service}") {
     template.createDeclarativePipeline(someParam: 'myParam')
  }
 
