@@ -1,3 +1,3 @@
-@Library('globalPipelineLibraries')
+@Library('globalPipelineLibraries') _
 
 templatePipeline(branch: 'main')
