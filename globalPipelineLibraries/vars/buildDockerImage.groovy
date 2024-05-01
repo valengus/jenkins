@@ -9,7 +9,7 @@ def call(Map pipelineParams) {
 
     stages {
 
-      stage('Checkout') {
+      stage('1-Checkout') {
         steps {
           cleanWs()
           checkout([
@@ -21,13 +21,14 @@ def call(Map pipelineParams) {
         }
       }
 
-      stage('INFO') {
+      stage('2-INFO') {
         steps {
           script {
 
             echo "BRANCH - ${pipelineParams.branch}"
             echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
             log.info "Changing directry to ${params.DOCKER_IMAGE}"
+            sh "env"
 
             dir("${params.DOCKER_IMAGE}") {
               sh "cat Dockerfile"
