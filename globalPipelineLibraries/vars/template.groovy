@@ -1,18 +1,25 @@
-def call(Map pipelineParams) {
+def createMyStandardDeclarativePipeline(Map templateParams) {   
 
-  pipeline {
-    agent any
-
-    stages {
-      stage('Stage one') {
-        steps {
-          script {
-            echo "Parameter from template creation: " + pipelineParams.someParam
-          }
+    pipeline {
+        agent any
+        parameters {
+            string(name: 'myInput', description: 'Some pipeline parameters')
         }
-      }
-
+        stages {
+            stage('Stage one') {
+                steps {
+                    script {
+                        echo "Parameter from template creation: " + templateParams.someParam
+                    }
+                }
+            }
+            stage('Stage two') {
+                steps {
+                    script {
+                        echo "Job input parameter: " + params.myInput
+                    }
+                }
+            }
+        }
     }
-  }
-
 }

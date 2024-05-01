@@ -1,3 +1,3 @@
 @Library('globalPipelineLibraries')
 
-template(someParam: 'myParam')
+template.createMyStandardDeclarativePipeline(someParam: 'myParam')
