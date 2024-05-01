@@ -1,3 +1,3 @@
 @Library('globalPipelineLibraries')
 
-myDeliveryPipeline(someParam: 'someParam')
+templatePipeline(branch: 'main')

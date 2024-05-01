@@ -1,15 +1,13 @@
-
-
 def call(Map pipelineParams) {
 
     pipeline {
         agent any
         stages {
 
-            stage('build') {
+            stage('info') {
                 steps {
                     script {
-                        echo "Parameter from template creation: " + pipelineParams.someParam
+                        echo "pipelineParams.branch"
                     }
                 }
             }
