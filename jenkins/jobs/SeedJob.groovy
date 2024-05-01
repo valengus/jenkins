@@ -1,5 +1,12 @@
 
-folder('project-a') {
-    displayName('Project A')
-    description('Folder for project A')
+folder('github') {
+    displayName('github')
+    description('Projects stored on github')
 }
+
+job('github/docker') {
+  steps {
+    shell('echo Hello World!')
+  }
+}
+
