@@ -1,4 +1,5 @@
-@Library('globalPipelineLibraries') _
 
-log.info 'Starting'
-log.warning 'Nothing to do!'
+folder('project-a') {
+    displayName('Project A')
+    description('Folder for project A')
+}
