@@ -1,5 +1,3 @@
 @Library('globalPipelineLibraries')
 
-pipelineJob("docker") {
-  template.createDeclarativePipeline(someParam: 'myParam')
-}
+template_DockerBuild.createDockerBuild(someParam: 'myParam')

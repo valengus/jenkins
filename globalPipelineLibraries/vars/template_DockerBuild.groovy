@@ -1,4 +1,4 @@
-def createDeclarativePipeline(Map templateParams) {   
+def createDockerBuild(Map templateParams) {   
 
   pipeline {
     agent any
