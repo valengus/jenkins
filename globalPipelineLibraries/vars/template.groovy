@@ -1,4 +1,4 @@
-def createDockerBuild(Map templateParams) {   
+def call(Map pipelineParams) {
 
   pipeline {
     agent any
@@ -9,7 +9,7 @@ def createDockerBuild(Map templateParams) {
       stage('Stage one') {
         steps {
           script {
-            echo "Parameter from template creation: " + templateParams.someParam
+            echo "Parameter from template creation: " + pipelineParams.someParam
           }
         }
       }
