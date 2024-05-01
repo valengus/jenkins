@@ -21,20 +21,16 @@ def call(Map pipelineParams) {
         }
       }
 
-      stage('2-INFO') {
+      stage('2-Info') {
         steps {
           script {
-
-            echo "BRANCH - ${pipelineParams.branch}"
-            echo "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
+            log.info "BRANCH - ${pipelineParams.branch}"
+            log.info "DOCKER_IMAGE - ${params.DOCKER_IMAGE}"
             log.info "Changing directry to ${params.DOCKER_IMAGE}"
             sh "env"
-
             dir("${params.DOCKER_IMAGE}") {
               sh "cat Dockerfile"
             }
-
-
           }
         }
       }
@@ -43,4 +39,3 @@ def call(Map pipelineParams) {
     }
   }
 }
-
