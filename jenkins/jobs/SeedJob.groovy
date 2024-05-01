@@ -13,7 +13,6 @@ pipelineJob('job-name') {
   definition {
     cps {
       script('''@Library('globalPipelineLibraries') _
-      
       template.createMyStandardDeclarativePipeline(someParam: 'myParam')
       '''.stripIndent())
       sandbox()     
