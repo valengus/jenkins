@@ -13,7 +13,9 @@ pipelineJob('job-name') {
   definition {
     cps {
       script('''
-      @Library('globalPipelineLibraries')
+      #!/usr/bin/groovy
+      @Library(value='globalPipelineLibraries@master', changelog=false) _
+      
       template.createMyStandardDeclarativePipeline(someParam: 'myParam')
       '''.stripIndent())
       sandbox()     
