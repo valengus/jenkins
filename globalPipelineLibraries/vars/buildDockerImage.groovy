@@ -85,11 +85,7 @@ def call(Map pipelineParams) {
 
       stage('7-Push') {
         steps {
-          script {
-            dir("${params.DOCKER_IMAGE}") {
-            log.info "Push"
-            }
-          }
+          sh. "docker push ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE} --all-tags"
         }
       }
 
