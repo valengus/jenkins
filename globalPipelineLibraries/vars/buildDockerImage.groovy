@@ -40,7 +40,7 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-              sh "docker build . -t ${params.DOCKER_REGISTRY}\\${params.DOCKER_IMAGE}"
+              sh "docker build . -t ${params.DOCKER_REGISTRY}\${params.DOCKER_IMAGE}"
             }
           }
         }
