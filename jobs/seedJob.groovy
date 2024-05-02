@@ -25,7 +25,7 @@ pipelineJob('docker') {
   definition {
     cps {
       script('''@Library('globalPipelineLibraries') _
-      getDockerImageJob.groovy(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
+      getDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
       '''.stripIndent())
       sandbox()     
     }
