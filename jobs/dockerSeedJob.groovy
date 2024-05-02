@@ -8,6 +8,7 @@
 //     description('https://github.com/valengus/docker.git')
 // }
 
+
 job('DSL-Tutorial-1-Test') {
     triggers { scm("*/15 * * * *") }
     scm {
@@ -18,7 +19,7 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      shell('ls')
-
+      def output = sh returnStdout: true, script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-"
+      foldersList = output.tokenize('\n').collect() { it }
     }
 }
