@@ -12,7 +12,7 @@ pipelineJob('github/docker/docker') {
   definition {
     cps {
       script('''@Library('globalPipelineLibraries') _
-      buildDockerImage(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
+      buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
       '''.stripIndent())
       sandbox()     
     }
