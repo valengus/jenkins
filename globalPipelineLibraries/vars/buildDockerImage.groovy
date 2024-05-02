@@ -36,7 +36,17 @@ def call(Map pipelineParams) {
         }
       }
 
-      stage('3-Build') {
+      stage('3-Prepare') {
+        steps {
+          script {
+            dir("${params.DOCKER_IMAGE}") {
+              sh "docker image prune -af"
+            }
+          }
+        }
+      }
+
+      stage('4-Build') {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
