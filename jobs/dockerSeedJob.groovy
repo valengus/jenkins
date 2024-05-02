@@ -19,6 +19,7 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      files.getDirectories "."
+      def directories = files.getDirectories("$WORKSPACE")
+      echo "$directories"
     }
 }
