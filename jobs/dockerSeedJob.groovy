@@ -18,6 +18,6 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      shell('echo Hello World!')
+      shell('ls')
     }
 }
