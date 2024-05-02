@@ -8,7 +8,6 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
-
 def list = [ 
   "ansible:2.15.6",
   "oraclelinux:9",
@@ -24,23 +23,19 @@ def list = [
   "php:8.1"
 ]
 
-list.each {
-  println it
-
-  pipelineJob('github/docker/it') {
+list.each { item ->
+  echo "${item}"
+  pipelineJob('github/docker/${item}') {
     definition {
       cps {
         script('''@Library('globalPipelineLibraries') _
-        buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: "it")
+        buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: "${item}")
         '''.stripIndent())
         sandbox()     
       }
     }
   }
-
 }
-
-
 
 
 // pipelineJob('github/docker/docker') {
