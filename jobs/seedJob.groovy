@@ -24,7 +24,7 @@ def list = [
 ]
 
 list.each { item ->
-  echo "${item}"
+
   pipelineJob('github/docker/${item}') {
     definition {
       cps {
