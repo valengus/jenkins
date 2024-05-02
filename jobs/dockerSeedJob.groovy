@@ -19,5 +19,14 @@ job('DSL-Tutorial-1-Test') {
     }
     steps {
       shell('ls')
+
+        def  FILES_LIST = sh (script: "ls .", returnStdout: true).trim()
+        //DEBUG
+        echo "FILES_LIST : ${FILES_LIST}"
+        //PARSING
+        for(String ele : FILES_LIST.split("\\r?\\n")){ 
+          println ">>>${ele}<<<"     
+        }
+
     }
 }
