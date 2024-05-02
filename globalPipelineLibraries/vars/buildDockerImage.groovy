@@ -10,7 +10,7 @@ def call(Map pipelineParams) {
 
     environment {
       DOCKERHUB_TOKEN=credentials('dockerhubToken')
-      log.buildtime
+      BUILDTIME = sh(script: "echo `date +%F-%T`", returnStdout: true).trim()
     }
 
     stages {
