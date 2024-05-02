@@ -19,7 +19,6 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      def output = sh returnStdout: true, script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-"
-      foldersList = output.tokenize('\n').collect() { it }
+      files.getDirectories "."
     }
 }
