@@ -5,7 +5,7 @@ def call(Map pipelineParams) {
 
     parameters {
       choice (name: 'DOCKER_IMAGE', choices: ['oraclelinux:9', 'oraclelinux:8' ],  description: 'docker image to build')
-      string (name: 'DOCKER_REGISTRY', defaultValue: 'valengus', description: 'docker registry')
+      string (name: 'DOCKER_REGISTRY', defaultValue: 'docker.io/valengus', description: 'docker registry')
     }
 
     environment {
@@ -56,17 +56,17 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-              sh "docker build --platform linux/amd64 --no-cache . -t ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}"
+              sh "docker build --platform linux/amd64 --no-cache . -t ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}:latest"
             }
           }
         }
       }
 
-
       stage('5-Tag') {
         steps {
           script {
             log.info "Tag"
+            sh "docker tag ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}:latest ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}:${env.BUILDTIME}"
           }
         }
       }
