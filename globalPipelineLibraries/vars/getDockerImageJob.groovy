@@ -26,7 +26,16 @@ def call(Map pipelineParams) {
               echo "${item}"
             }
 
-
+            pipelineJob('github/docker/docker') {
+              definition {
+                cps {
+                  script('''@Library('globalPipelineLibraries') _
+                  buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
+                  '''.stripIndent())
+                  sandbox()     
+                }
+              }
+            }
 
           }
         }
@@ -37,10 +46,5 @@ def call(Map pipelineParams) {
     }
   }
 
-
-def dockerProjects = sh(script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-", returnStdout: true).split('\n')
-dockerProjects.each { item ->
-  echo "${item}"
-}
 
 }
