@@ -8,14 +8,7 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
-
-checkout([
-$class: 'GitSCM',
-doGenerateSubmoduleConfigurations: false,
-  userRemoteConfigs: [[ url: "https://github.com/valengus/docker.git" ]],
-  branches: [ [name: "main"] ]
-])
-
+checkout
 
 // pipelineJob('github/docker/docker') {
 //   definition {
