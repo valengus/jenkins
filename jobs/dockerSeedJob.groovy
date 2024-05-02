@@ -19,6 +19,6 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      getDockerProjects.folders
+      echo "dsl script"
     }
 }
