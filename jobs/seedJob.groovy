@@ -10,20 +10,24 @@ folder('github/docker') {
 
 
 def list = [ 
-"ansible:2.15.6",
-"oraclelinux:9",
-"ansible:2.7.8",
-"oraclelinux:8",
-"python:3.9",
-"ansible:molecule",
-"terraform:0.13.7",
-"oraclelinux-systemd:8",
-"s3fs-fuse:1.93-1",
-"jenkins:2.346.2",
-"centos:7",
-"php:8.1"
+  "ansible:2.15.6",
+  "oraclelinux:9",
+  "ansible:2.7.8",
+  "oraclelinux:8",
+  "python:3.9",
+  "ansible:molecule",
+  "terraform:0.13.7",
+  "oraclelinux-systemd:8",
+  "s3fs-fuse:1.93-1",
+  "jenkins:2.346.2",
+  "centos:7",
+  "php:8.1"
 ]
-list.each {println it}
+
+list.each {
+  println it
+
+}
 
 
 
@@ -40,14 +44,7 @@ list.each {println it}
 // }
 
 
-// pipelineJob('docker') {
-//   definition {
-//     cps {
-//       script('''@Library('globalPipelineLibraries') _
-//       getDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
-//       '''.stripIndent())
-//       sandbox()     
-//     }
-//   }
+// def dockerProjects = sh(script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-", returnStdout: true).split('\n')
+// dockerProjects.each { item ->
+//   echo "${item}"
 // }
-

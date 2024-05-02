@@ -4,7 +4,7 @@ def call(Map pipelineParams) {
     agent any
 
     parameters {
-      choice (name: 'DOCKER_IMAGE', choices: ['oraclelinux:9'],  description: 'docker image to build')
+      choice (name: 'DOCKER_IMAGE', choices: ["${pipelineParams.docker_image}"],  description: 'docker image to build')
       string (name: 'DOCKER_IMAGE_PATH', defaultValue: 'valengus', description: 'image path')
     }
 
