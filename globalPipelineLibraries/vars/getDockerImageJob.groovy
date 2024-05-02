@@ -25,11 +25,17 @@ def call(Map pipelineParams) {
             dockerProjects.each { item ->
               echo "${item}"
             }
+          }
+        }
+      }
 
-            script('''@Library('globalPipelineLibraries') _
-            buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
-            '''.stripIndent())
 
+      stage('3-Info') {
+        steps {
+          script {
+            @Library('globalPipelineLibraries') _
+            buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git'
+            }
           }
         }
       }
