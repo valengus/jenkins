@@ -5,6 +5,7 @@ def call(Map pipelineParams) {
 
     parameters {
       choice (name: 'DOCKER_IMAGE', choices: ['oraclelinux:9', 'oraclelinux:8' ],  description: 'docker image to build')
+      string (name: 'DOCKER_REGISTRY', defaultValue: 'local', description: 'docker registry')
     }
 
     stages {
@@ -34,6 +35,20 @@ def call(Map pipelineParams) {
           }
         }
       }
+
+      stage('3-Build') {
+        steps {
+          script {
+            dir("${params.DOCKER_IMAGE}") {
+              sh "docker build . -t ${params.DOCKER_REGISTRY}\\${params.DOCKER_IMAGE}"
+            }
+          }
+        }
+      }
+
+
+
+
 
 
     }
