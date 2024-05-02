@@ -25,7 +25,9 @@ def list = [
 
 list.each { item ->
 
-  pipelineJob("github/docker/${item}") {
+  jenkinsDockerBuildJobName = item.replace(":", "_")
+
+  pipelineJob("github/docker/${jenkinsDockerBuildJobName}") {
     definition {
       cps {
         script('''@Library('globalPipelineLibraries') _
@@ -35,7 +37,9 @@ list.each { item ->
       }
     }
   }
+
 }
+
 
 
 // pipelineJob('github/docker/docker') {
