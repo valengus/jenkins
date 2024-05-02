@@ -12,8 +12,8 @@ folder('github/docker') {
 checkout([
 $class: 'GitSCM',
 doGenerateSubmoduleConfigurations: false,
-  userRemoteConfigs: [[ url: "${pipelineParams.git_url}" ]],
-  branches: [ [name: "${pipelineParams.branch}"] ]
+  userRemoteConfigs: [[ url: "https://github.com/valengus/docker.git" ]],
+  branches: [ [name: "main"] ]
 ])
 
 
