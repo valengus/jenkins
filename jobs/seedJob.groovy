@@ -1,3 +1,13 @@
+folder('github') {
+    displayName('github')
+    description('Projects stored on github')
+}
+
+folder('github/docker') {
+    displayName('docker')
+    description('https://github.com/valengus/docker.git')
+}
+
 
 // pipelineJob('github/docker/docker') {
 //   definition {
@@ -9,3 +19,15 @@
 //     }
 //   }
 // }
+
+
+pipelineJob('docker') {
+  definition {
+    cps {
+      script('''@Library('globalPipelineLibraries') _
+      getDockerImageJob.groovy(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
+      '''.stripIndent())
+      sandbox()     
+    }
+  }
+}
