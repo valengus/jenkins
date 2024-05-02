@@ -27,6 +27,17 @@ def list = [
 list.each {
   println it
 
+  pipelineJob('github/docker/$it') {
+    definition {
+      cps {
+        script('''@Library('globalPipelineLibraries') _
+        buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: "$it")
+        '''.stripIndent())
+        sandbox()     
+      }
+    }
+  }
+
 }
 
 
