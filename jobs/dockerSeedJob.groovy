@@ -19,6 +19,7 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      getDockerProjects
+      def output = sh(script: "echo \$(ls)", returnStdout: true)
+      echo "Output: ${output}"
     }
 }
