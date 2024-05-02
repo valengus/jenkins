@@ -8,6 +8,10 @@ def call(Map pipelineParams) {
       string (name: 'DOCKER_REGISTRY', defaultValue: 'local', description: 'docker registry')
     }
 
+    environment {
+      GITHUB_TOKEN=credentials('dockerhubToken')
+    }
+
     stages {
 
       stage('1-Checkout') {
@@ -40,7 +44,7 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-              sh "docker image prune -af"
+              sh "docker system prune --volumes -af"
             }
           }
         }
@@ -50,7 +54,7 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-              sh "docker build --no-cache . -t ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}"
+              sh "docker build --platform linux/amd64 --no-cache . -t ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}"
             }
           }
         }
