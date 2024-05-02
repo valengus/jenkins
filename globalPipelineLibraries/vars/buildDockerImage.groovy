@@ -56,7 +56,7 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-              sh "docker build --platform linux/amd64 --no-cache . -t ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:latest"
+              sh "docker build --platform linux/amd64 --no-cache . -t ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}"
             }
           }
         }
@@ -66,7 +66,6 @@ def call(Map pipelineParams) {
         steps {
           script {
             log.info "Tag"
-            sh "docker tag ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:latest ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME}"
           }
         }
       }
