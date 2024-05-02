@@ -19,9 +19,8 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      def clusterComponent = "./"
-      stage('list components') {
-          List<String> files = sh(script: "ls -A1 ${clusterComponent}", returnStdout: true).trim().split('\n')
-      }
+      def folder = "./"
+      List<String> files = sh(script: "ls -A1 ${folder}", returnStdout: true).trim().split('\n')
+
     }
 }
