@@ -5,11 +5,11 @@ def call(Map pipelineParams) {
 
     parameters {
       choice (name: 'DOCKER_IMAGE', choices: ['oraclelinux:9', 'oraclelinux:8' ],  description: 'docker image to build')
-      string (name: 'DOCKER_REGISTRY', defaultValue: 'local', description: 'docker registry')
+      string (name: 'DOCKER_REGISTRY', defaultValue: 'valengus', description: 'docker registry')
     }
 
     environment {
-      GITHUB_TOKEN=credentials('dockerhubToken')
+      DOCKERHUB_TOKEN=credentials('dockerhubToken')
     }
 
     stages {
@@ -45,6 +45,7 @@ def call(Map pipelineParams) {
           script {
             dir("${params.DOCKER_IMAGE}") {
               sh "docker system prune --volumes -af"
+              sh "echo $DOCKERHUB_TOKEN_PSW | docker login --username $DOCKERHUB_TOKEN_USR --password-stdin"
             }
           }
         }
@@ -60,17 +61,28 @@ def call(Map pipelineParams) {
         }
       }
 
-      stage('5-Test') {
+
+      stage('5-Tag') {
+        steps {
+          script {
+            log.info "Tag"
+          }
+        }
+      }
+
+      stage('6-Test') {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
             log.info "Test"
+            sh "docker image ls"
+            sh "docker ps -a"
             }
           }
         }
       }
 
-      stage('6-Push') {
+      stage('7-Push') {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
@@ -80,13 +92,13 @@ def call(Map pipelineParams) {
         }
       }
 
-      stage('7-CleanUp') {
+      stage('8-CleanUp') {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-            sh "docker ps -a"
-            sh "docker image ls"
             log.info "CleanUp"
+            sh "docker logout"
+            sh "docker system prune --volumes -af"
             }
           }
         }
