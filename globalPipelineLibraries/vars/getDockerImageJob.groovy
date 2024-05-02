@@ -30,14 +30,8 @@ def call(Map pipelineParams) {
       }
 
 
-      stage('2-Info') {
-        steps {
-          script {
-            @Library('globalPipelineLibraries') _
-            buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
-          }
-        }
-      }
+            // @Library('globalPipelineLibraries') _
+            // buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
 
 
 

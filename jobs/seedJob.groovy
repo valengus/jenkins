@@ -9,6 +9,15 @@ folder('github/docker') {
 }
 
 
+cleanWs()
+checkout([
+$class: 'GitSCM',
+doGenerateSubmoduleConfigurations: false,
+  userRemoteConfigs: [[ url: "${pipelineParams.git_url}" ]],
+  branches: [ [name: "${pipelineParams.branch}"] ]
+])
+
+
 // pipelineJob('github/docker/docker') {
 //   definition {
 //     cps {
@@ -21,13 +30,14 @@ folder('github/docker') {
 // }
 
 
-pipelineJob('docker') {
-  definition {
-    cps {
-      script('''@Library('globalPipelineLibraries') _
-      getDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
-      '''.stripIndent())
-      sandbox()     
-    }
-  }
-}
+// pipelineJob('docker') {
+//   definition {
+//     cps {
+//       script('''@Library('globalPipelineLibraries') _
+//       getDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')
+//       '''.stripIndent())
+//       sandbox()     
+//     }
+//   }
+// }
+
