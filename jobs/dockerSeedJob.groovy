@@ -9,16 +9,8 @@
 // }
 
 
-job('DSL-Tutorial-1-Test') {
-    triggers { scm("*/15 * * * *") }
-    scm {
-      git {
-        remote {
-            url("https://github.com/valengus/docker.git")
-        }
-      }
-    }
+job('demo') {
     steps {
-      echo "dsl script"
+        shell('echo Hello World!')
     }
 }
