@@ -25,7 +25,7 @@ def list = [
 
 list.each { item ->
 
-  pipelineJob('github/docker/${item}') {
+  pipelineJob("github/docker/${item}") {
     definition {
       cps {
         script('''@Library('globalPipelineLibraries') _
