@@ -63,6 +63,8 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
+            sh "docker ps -a"
+            sh "docker image ls"
             log.info "CleanUp"
             }
           }
