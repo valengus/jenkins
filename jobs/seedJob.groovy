@@ -1,7 +1,4 @@
-folder('github') {
-    displayName('github')
-    description('Projects stored on github')
-}
+
 
 folder('github/docker') {
     displayName('github')
