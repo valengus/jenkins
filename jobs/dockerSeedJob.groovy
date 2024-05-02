@@ -9,14 +9,15 @@
 // }
 
 job('DSL-Tutorial-1-Test') {
+    triggers { scm("*/15 * * * *") }
     scm {
-        git('https://github.com/valengus/docker.git')
-    }
-    triggers {
-        scm('H/15 * * * *')
+      git {
+        remote {
+            url("https://github.com/valengus/docker.git")
+        }
+      }
     }
     steps {
-        shell('echo Hello World!')
+      shell('echo Hello World!')
     }
 }
-
