@@ -9,13 +9,9 @@ folder('github/docker') {
 }
 
 
-job('example-1') {
-  steps {
-    def dockerProjects = sh(script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-", returnStdout: true).split('\n')
-    dockerProjects.each { item ->
-      echo "${item}"
-    }
-  }
+def dockerProjects = sh(script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-", returnStdout: true).split('\n')
+dockerProjects.each { item ->
+  echo "${item}"
 }
 
 // pipelineJob('github/docker/docker') {
