@@ -19,7 +19,9 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      def directories = files.getDirectories("$WORKSPACE")
-      echo "$directories"
+      def clusterComponent = "./"
+      stage('list components') {
+          List<String> files = sh(script: "ls -A1 ${clusterComponent}", returnStdout: true).trim().split('\n')
+      }
     }
 }
