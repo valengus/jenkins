@@ -50,7 +50,7 @@ def call(Map pipelineParams) {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
-              sh "docker build . -t ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}"
+              sh "docker build --no-cache . -t ${params.DOCKER_REGISTRY}/${params.DOCKER_IMAGE}"
             }
           }
         }
@@ -59,7 +59,15 @@ def call(Map pipelineParams) {
 
 
 
-
+      stage('9-CleanUp') {
+        steps {
+          script {
+            dir("${params.DOCKER_IMAGE}") {
+            log.info "CleanUp"
+            }
+          }
+        }
+      }
 
     }
   }
