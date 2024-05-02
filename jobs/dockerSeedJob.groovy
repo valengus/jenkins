@@ -19,8 +19,6 @@ job('DSL-Tutorial-1-Test') {
       }
     }
     steps {
-      def folder = "./"
-      List<String> files = sh(script: "ls -A1 ${folder}", returnStdout: true).trim().split('\n')
-
+      getDockerProjects
     }
 }
