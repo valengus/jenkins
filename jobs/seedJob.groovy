@@ -8,12 +8,15 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
-checkout([
-$class: 'GitSCM',
-doGenerateSubmoduleConfigurations: false,
-userRemoteConfigs: [[ url: "https://github.com/valengus/docker.git" ]],
-branches: [ [name: "main"] ]
-])
+
+job('example-1') {
+  steps {
+    def dockerProjects = sh(script: "find . -maxdepth 1 -type d -name '*:*' | cut -c 3-", returnStdout: true).split('\n')
+    dockerProjects.each { item ->
+      echo "${item}"
+    }
+  }
+}
 
 // pipelineJob('github/docker/docker') {
 //   definition {
