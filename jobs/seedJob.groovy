@@ -9,7 +9,6 @@ folder('github/docker') {
 }
 
 
-cleanWs()
 checkout([
 $class: 'GitSCM',
 doGenerateSubmoduleConfigurations: false,
