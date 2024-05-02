@@ -56,10 +56,27 @@ def call(Map pipelineParams) {
         }
       }
 
+      stage('5-Test') {
+        steps {
+          script {
+            dir("${params.DOCKER_IMAGE}") {
+            log.info "Test"
+            }
+          }
+        }
+      }
 
+      stage('6-Push') {
+        steps {
+          script {
+            dir("${params.DOCKER_IMAGE}") {
+            log.info "Push"
+            }
+          }
+        }
+      }
 
-
-      stage('9-CleanUp') {
+      stage('7-CleanUp') {
         steps {
           script {
             dir("${params.DOCKER_IMAGE}") {
