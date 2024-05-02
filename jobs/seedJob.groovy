@@ -3,8 +3,12 @@ folder('github') {
     description('Projects stored on github')
 }
 
+folder('github/docker') {
+    displayName('github')
+    description('Projects stored on github')
+}
 
-pipelineJob('github/docker') {
+pipelineJob('github/docker/docker') {
   definition {
     cps {
       script('''@Library('globalPipelineLibraries') _
