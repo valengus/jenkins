@@ -5,7 +5,7 @@ def call(Map pipelineParams) {
 
     parameters {
       choice (name: 'DOCKER_IMAGE', choices: ['oraclelinux:9', 'oraclelinux:8' ],  description: 'docker image to build')
-      string (name: 'DOCKER_REGISTRY', defaultValue: 'docker.io/valengus', description: 'docker registry')
+      string (name: 'DOCKER_REGISTRY', defaultValue: 'registry.hub.docker.com/valengus', description: 'docker registry')
     }
 
     environment {
