@@ -16,7 +16,7 @@ def call(Map pipelineParams) {
     properties(
       [pipelineTriggers(
         [upstream(
-            upstreamProjects: '_seed',
+            upstreamProjects: 'oraclelinux9',
             threshold: hudson.model.Result.SUCCESS         
         )]
       )]
