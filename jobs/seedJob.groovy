@@ -11,7 +11,7 @@ folder('github/docker') {
 
 
 def map = [ 
-  "oraclelinux9": '', 
+  "oraclelinux9": null, 
   "ansible2.15": "oraclelinux9",
 ]
 

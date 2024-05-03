@@ -1,3 +1,11 @@
+def docker_image_from(docker_image_from) {
+  if (pipelineParams.docker_image_from != null ) {
+    triggers {
+      upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+    }
+  }
+}
+
 def call(Map pipelineParams) {
 
   pipeline {
@@ -13,12 +21,11 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
+    buildDockerImageJob.docker_image_from "triggers { upstream(upstreamProjects: \"/github/docker/${pipelineParams.docker_image_from}\", threshold: hudson.model.Result.SUCCESS) }"
 
-    if (pipelineParams.docker_image_from != '') {
-      triggers {
-        upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
-      }
-    }
+    // triggers {
+    //   upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+    // }
 
     stages {
 
