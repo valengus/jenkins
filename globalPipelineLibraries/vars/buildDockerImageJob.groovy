@@ -13,7 +13,7 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
-    properties(
+    options(
       [pipelineTriggers(
         [upstream(
             upstreamProjects: 'oraclelinux9',
