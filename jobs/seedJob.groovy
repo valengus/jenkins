@@ -8,6 +8,24 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
+
+pipelineJob("dockerBuildSeedJob") {
+  definition {
+    cps {
+      script("@Library('globalPipelineLibraries') _ ;  checkoutJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git') ; createDockerImageJobs()".stripIndent())
+      sandbox()     
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
 def list = [ 
   "ansible:2.15.6",
   "oraclelinux:9",
@@ -30,7 +48,7 @@ list.each { item ->
   pipelineJob("github/docker/${jenkinsDockerBuildJobName}") {
     definition {
       cps {
-        script("@Library('globalPipelineLibraries') _ ;  getDockerImageJob ; buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: \"${item}\")".stripIndent())
+        script("@Library('globalPipelineLibraries') _ ;  buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: \"${item}\")".stripIndent())
         sandbox()     
       }
     }
