@@ -81,7 +81,7 @@ def call(Map pipelineParams) {
             dir("${params.DOCKER_IMAGE}") {
             log.info "Test"
             sh "docker image ls"
-            sh "docker ps -a"
+            sh "trivy image --severity HIGH,CRITICAL ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME}"
             }
           }
         }
