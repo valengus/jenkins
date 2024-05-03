@@ -1,5 +1,7 @@
 def call(Map pipelineParams) {
 
+@Library('globalPipelineLibraries') _
+
   pipeline {
     agent any
 
