@@ -13,9 +13,18 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
+    // triggers {
+    //   upstream(upstreamProjects: "${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+    // }
+
     triggers {
-      upstream(upstreamProjects: "${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
-    }
+      def skipBuildTrigger=pipelineParams.docker_image_from
+      if (skipBuild == null || skipBuild.isEmpty()) {
+
+      } else {
+        upstream(upstreamProjects: "${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+      }
+
 
     stages {
 
