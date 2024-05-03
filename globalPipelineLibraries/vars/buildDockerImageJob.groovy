@@ -64,19 +64,19 @@ def call(Map pipelineParams) {
 
       stage('5-Tag') {
         steps {
-          log.info "Tag"
-          sh "docker tag ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME} ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:latest"
+          script {
+            log.info "Tag"
+            sh "docker tag ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME} ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:latest"
+          }
         }
       }
 
       stage('6-Test') {
         steps {
           script {
-            dir("${params.DOCKER_IMAGE}") {
             log.info "Test"
             sh "docker image ls"
             sh "trivy image --severity HIGH,CRITICAL ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME}"
-            }
           }
         }
       }
@@ -90,11 +90,9 @@ def call(Map pipelineParams) {
       stage('8-CleanUp') {
         steps {
           script {
-            dir("${params.DOCKER_IMAGE}") {
             log.info "CleanUp"
             sh "docker logout"
             sh "docker system prune --volumes -af"
-            }
           }
         }
       }
