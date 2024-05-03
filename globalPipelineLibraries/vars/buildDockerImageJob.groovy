@@ -1,5 +1,8 @@
 def call(Map pipelineParams) {
 
+import src.org.jenkinsSharedLibrarie.Triger
+def t = new org.jenkinsSharedLibrarie.Triger()
+
   pipeline {
     agent any
 
@@ -13,7 +16,7 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
-    trigger.triggerFromJob "${pipelineParams.docker_image_from}"
+    t.triggerFromJob("${pipelineParams.docker_image_from}")
 
     // def t = new org.jenkinsSharedLibrarie.Triger()
     // t.triggerFromJob("${pipelineParams.docker_image_from}")
