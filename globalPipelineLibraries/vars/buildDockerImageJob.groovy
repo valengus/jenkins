@@ -1,7 +1,5 @@
 def call(Map pipelineParams) {
 
-  def t = new org.jenkinsSharedLibrarie.Triger()
-
   pipeline {
     agent any
 
@@ -14,8 +12,6 @@ def call(Map pipelineParams) {
       DOCKERHUB_TOKEN=credentials('dockerhubToken')
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
-    
-    t.triggerFromJob("${pipelineParams.docker_image_from}")
 
     // def t = new org.jenkinsSharedLibrarie.Triger()
     // t.triggerFromJob("${pipelineParams.docker_image_from}")
