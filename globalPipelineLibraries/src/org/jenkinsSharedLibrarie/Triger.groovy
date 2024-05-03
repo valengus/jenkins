@@ -1,5 +1,5 @@
-// src/org/jenkinssl/Triger.groovy
-package org.jenkinssl
+// src/org/jenkinsSharedLibrarie/Triger.groovy
+package org.jenkinsSharedLibrarie
 
 def triggerFromJob(jobName) {
   if (jobName == null || jobName.isEmpty()) {

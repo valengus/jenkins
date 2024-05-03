@@ -14,7 +14,7 @@ def call(Map pipelineParams) {
     }
 
     
-    org.jenkinssl.Triger().triggerFromJob("${pipelineParams.docker_image_from}")
+    org.jenkinsSharedLibrarie.Triger().triggerFromJob("${pipelineParams.docker_image_from}")
 
     // triger.skipBuildTrigger "${pipelineParams.docker_image_from}"
 
