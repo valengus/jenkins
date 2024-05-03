@@ -25,15 +25,11 @@ map.eachWithIndex{
   if (entry.value == null || entry.value.isEmpty()) {
 
   } else {
-    triggers { 
-      upstream(upstreamProjects: "$entry.value", threshold: hudson.model.Result.SUCCESS) 
+    triggers {
+        upstream("$entry.value", 'SUCCESS')
     }
   }
 
-    // triggers {
-    //     upstream("$entry.value", 'SUCCESS')
-    // }
-    
     
     definition {
       cps {
