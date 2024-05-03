@@ -9,6 +9,18 @@ folder('github/docker') {
 }
 
 
+
+def map = [ 
+  oraclelinux9: null, 
+  ansible2.15: "oraclelinux9"
+]
+
+map.eachWithIndex{
+  entry, i -> 
+  println "$i $entry.key: $entry.value"
+}
+
+
 def dockerImageList = [
   "oraclelinux9",
   "ansible2.15",
