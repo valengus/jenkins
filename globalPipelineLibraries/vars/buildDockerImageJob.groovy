@@ -13,14 +13,17 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
-    options(
-      [pipelineTriggers(
-        [upstream(
-            upstreamProjects: 'oraclelinux9',
-            threshold: hudson.model.Result.SUCCESS         
+    options {
+      properties(
+        [pipelineTriggers(
+          [upstream(
+              upstreamProjects: 'oraclelinux9',
+              threshold: hudson.model.Result.SUCCESS         
+          )]
         )]
-      )]
-    )
+      )
+    }
+
 
     stages {
 
