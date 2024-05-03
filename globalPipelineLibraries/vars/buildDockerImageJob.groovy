@@ -1,7 +1,5 @@
 def call(Map pipelineParams) {
 
-@Library('globalPipelineLibraries') _
-
   pipeline {
     agent any
 
@@ -16,7 +14,9 @@ def call(Map pipelineParams) {
     }
 
     
-    org.jenkinsSharedLibrarie.Triger().triggerFromJob("${pipelineParams.docker_image_from}")
+    script { }
+
+    // org.jenkinsSharedLibrarie.Triger().triggerFromJob("${pipelineParams.docker_image_from}")
 
     // triger.skipBuildTrigger "${pipelineParams.docker_image_from}"
 
