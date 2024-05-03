@@ -24,7 +24,7 @@ def call(Map pipelineParams) {
       } else {
         upstream(upstreamProjects: "${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
       }
-
+    }
 
     stages {
 
