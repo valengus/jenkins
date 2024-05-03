@@ -13,11 +13,10 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
+    trigger.triggerFromJob "${pipelineParams.docker_image_from}"
 
-    script { 
-      def t = new org.jenkinsSharedLibrarie.Triger()
-      t.triggerFromJob("${pipelineParams.docker_image_from}")
-    }
+    // def t = new org.jenkinsSharedLibrarie.Triger()
+    // t.triggerFromJob("${pipelineParams.docker_image_from}")
 
     // org.jenkinsSharedLibrarie.Triger().triggerFromJob("${pipelineParams.docker_image_from}")
 
