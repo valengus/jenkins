@@ -17,6 +17,12 @@ def call(Map pipelineParams) {
         }
       }
 
+      stage('2') {
+        steps {
+          createDockerImageJobsScript()
+        }
+      }
+
 
     }
   }

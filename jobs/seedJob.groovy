@@ -12,7 +12,7 @@ folder('github/docker') {
 pipelineJob("dockerBuildSeedJob") {
   definition {
     cps {
-      script("@Library('globalPipelineLibraries') _ ;  checkoutJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git') ; createDockerImageJobsScript()".stripIndent())
+      script("@Library('globalPipelineLibraries') _ ;  checkoutJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git')".stripIndent())
       sandbox()     
     }
   }
