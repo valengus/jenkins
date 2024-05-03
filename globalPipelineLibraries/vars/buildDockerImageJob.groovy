@@ -16,7 +16,6 @@ def call(Map pipelineParams) {
 
     triggers {
       upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
-      when { expression { pipelineParams.docker_image_from != null } }
     }
 
     // if (pipelineParams.docker_image_from != null && pipelineParams.docker_image_from != '') {
