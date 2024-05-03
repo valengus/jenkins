@@ -10,7 +10,7 @@ folder('github/docker') {
 
 def dockerBuildJobs = [
   "oraclelinux9": null,
-  "ansible2.15": "oraclelinux9",
+  "ansible2.16": "oraclelinux9",
 ]
 
 dockerBuildJobs.eachWithIndex{
