@@ -30,7 +30,7 @@ list.each { item ->
   pipelineJob("github/docker/${jenkinsDockerBuildJobName}") {
     definition {
       cps {
-        script("@Library('globalPipelineLibraries') _ ;  buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: \"${item}\")".stripIndent())
+        script("@Library('globalPipelineLibraries') _ ;  createDockerImageJobsScript() ; buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: \"${item}\")".stripIndent())
         sandbox()     
       }
     }
