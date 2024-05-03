@@ -47,12 +47,8 @@ def call(Map pipelineParams) {
 
       stage('3-Prepare') {
         steps {
-          script {
-            dir("${params.DOCKER_IMAGE}") {
-              sh "docker system prune --volumes -af"
-              sh "echo $DOCKERHUB_TOKEN_PSW | docker login --username $DOCKERHUB_TOKEN_USR --password-stdin"
-            }
-          }
+          sh "docker system prune --volumes -af"
+          sh "echo $DOCKERHUB_TOKEN_PSW | docker login --username $DOCKERHUB_TOKEN_USR --password-stdin"
         }
       }
 
@@ -68,10 +64,8 @@ def call(Map pipelineParams) {
 
       stage('5-Tag') {
         steps {
-          script {
-            log.info "Tag"
-            sh "docker tag ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME} ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:latest"
-          }
+          log.info "Tag"
+          sh "docker tag ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:${env.BUILDTIME} ${params.DOCKER_IMAGE_PATH}/${params.DOCKER_IMAGE}:latest"
         }
       }
 
