@@ -14,14 +14,19 @@ def call(Map pipelineParams) {
     }
 
 
-    if ("${pipelineParams.docker_image_from}" != null ) {
-
+    def skipBuildTriger=pipelineParams.docker_image_from
+    
+    if (skipBuildTriger == null || skipBuild.isEmpty()) {
+      echo 'skipBuildTriger'
+    } else {
       triggers {
         upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
       }
-
     }
 
+    // triggers {
+    //   upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+    // }
 
     stages {
 
