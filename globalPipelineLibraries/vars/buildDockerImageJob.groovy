@@ -1,3 +1,5 @@
+def triger = new org.jenkinssl.Triger()
+
 def call(Map pipelineParams) {
 
   pipeline {
@@ -13,7 +15,7 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
-    def triger = new org.jenkinssl.Triger()
+    
     triger.triggerFromJob("${pipelineParams.docker_image_from}")
 
     // triger.skipBuildTrigger "${pipelineParams.docker_image_from}"
