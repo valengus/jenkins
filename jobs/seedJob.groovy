@@ -9,13 +9,10 @@ folder('github/docker') {
 }
 
 
-
-
-
-
-def dockerImageList = [ 
-  "ansible2.15",
+def dockerImageList = [
   "oraclelinux9",
+  "ansible2.15",
+
 ]
 
 dockerImageList.each { item ->

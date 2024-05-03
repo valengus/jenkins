@@ -13,6 +13,15 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
+    properties(
+      [pipelineTriggers(
+        [upstream(
+            upstreamProjects: 'seed',
+            threshold: hudson.model.Result.SUCCESS         
+        )]
+      )]
+    )
+
     stages {
 
       stage('1-Checkout') {
