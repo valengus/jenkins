@@ -1,5 +1,3 @@
-def triger = new org.jenkinssl.Triger()
-
 def call(Map pipelineParams) {
 
   pipeline {
@@ -16,7 +14,7 @@ def call(Map pipelineParams) {
     }
 
     
-    triger.triggerFromJob("${pipelineParams.docker_image_from}")
+    org.jenkinssl.Triger().triggerFromJob("${pipelineParams.docker_image_from}")
 
     // triger.skipBuildTrigger "${pipelineParams.docker_image_from}"
 
