@@ -11,6 +11,7 @@ folder('github/docker') {
 def dockerBuildJobs = [
   "oraclelinux9": null,
   "ansible2.16": "oraclelinux9",
+  "terraform0.13": "ansible2.16",
 ]
 
 dockerBuildJobs.eachWithIndex{
