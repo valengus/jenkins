@@ -1,7 +1,7 @@
-def call(Map pipelineParams) {
-
 import src.org.jenkinsSharedLibrarie.Triger
 def t = new org.jenkinsSharedLibrarie.Triger()
+
+def call(Map pipelineParams) {
 
   pipeline {
     agent any
