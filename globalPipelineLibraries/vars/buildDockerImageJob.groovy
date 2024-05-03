@@ -13,9 +13,9 @@ def call(Map pipelineParams) {
       BUILDTIME = sh(script: "echo `date +%F_%H%M%S`", returnStdout: true).trim()
     }
 
-    if (pipelineParams.docker_image_from) {
+    if ${pipelineParams.docker_image_from} {
       triggers {
-        upstream(upstreamProjects: "/github/docker/oraclelinux9", threshold: hudson.model.Result.SUCCESS)
+        upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
       }
     }
 
