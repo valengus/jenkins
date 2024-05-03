@@ -14,7 +14,7 @@ def call(Map pipelineParams) {
     }
 
     triggers {
-      upstream(upstreamProjects: "github/docker/oraclelinux9", threshold: hudson.model.Result.SUCCESS)
+      upstream(upstreamProjects: "oraclelinux9", threshold: hudson.model.Result.SUCCESS)
     }
 
 
