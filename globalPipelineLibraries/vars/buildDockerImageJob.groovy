@@ -1,11 +1,3 @@
-def docker_image_from(docker_image_from) {
-  if (pipelineParams.docker_image_from != null ) {
-    triggers {
-      upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
-    }
-  }
-}
-
 def call(Map pipelineParams) {
 
   pipeline {
@@ -115,6 +107,14 @@ def call(Map pipelineParams) {
         }
       }
 
+    }
+  }
+}
+
+def docker_image_from(docker_image_from) {
+  if (pipelineParams.docker_image_from != null ) {
+    triggers {
+      upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
     }
   }
 }
