@@ -8,10 +8,8 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
-
-
 def dockerBuildJobs = [ 
-  "oraclelinux9": null, 
+  "oraclelinux9": null,
   "ansible2.15": "oraclelinux9",
 ]
 
@@ -20,11 +18,9 @@ dockerBuildJobs.eachWithIndex{
   println "$i $entry.key: $entry.value"
 
   pipelineJob("github/docker/$entry.key") {
-
     if (entry.value != null) {
       triggers { upstream("$entry.value", 'SUCCESS') }
     } 
-
     definition {
       cps {
         script("@Library('globalPipelineLibraries') _ ; buildDockerImageJob(branch: 'main', git_url: 'https://github.com/valengus/docker.git', docker_image: \"$entry.key\")".stripIndent())
