@@ -1,6 +1,5 @@
 def call(Map pipelineParams) {
 
-  @Library('globalPipelineLibraries') import jenkinsSharedLibrarie.Triger
   def t = new org.jenkinsSharedLibrarie.Triger()
 
   pipeline {
