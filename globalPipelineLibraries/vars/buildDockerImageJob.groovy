@@ -14,16 +14,11 @@ def call(Map pipelineParams) {
     }
 
 
-    triggers {
-      upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+    if (pipelineParams.docker_image_from != '') {
+      triggers {
+        upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
+      }
     }
-
-    // if (pipelineParams.docker_image_from != null && pipelineParams.docker_image_from != '') {
-    //   triggers {
-    //     upstream(upstreamProjects: "/github/docker/${pipelineParams.docker_image_from}", threshold: hudson.model.Result.SUCCESS)
-    //   }
-    // }
-
 
     stages {
 
