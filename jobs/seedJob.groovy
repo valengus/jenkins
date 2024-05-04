@@ -9,10 +9,17 @@ folder('github/docker') {
 }
 
 def folderName = "github/docker"
-def allJobs = hudson.model.Hudson.getInstance().getAllItems(Job.class).findAll { it.getFullName().contains(folderName) }
+def jobsList = []
 
-allJobs.getClass()
-println "$allJobs"
+Jenkins.instance.getAllItems(Job.class).each{
+  if(it.fullName.contains(folderName)) {
+    jobsList << it.fullName
+  }
+}
+
+
+jobsList.getClass()
+println "$jobsList"
 
 
 def dockerBuildJobs = [
