@@ -8,6 +8,13 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
+def folderName = "/github/docker"
+def allJobs = hudson.model.Hudson.getInstance().getAllItems(Job.class).findAll { it.getFullName().contains(folderName) }
+
+println "allJobs"
+
+
+
 def dockerBuildJobs = [
   "oraclelinux9": null,
   "ansible2.16": "oraclelinux9",
