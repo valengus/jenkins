@@ -11,11 +11,7 @@ folder('github/docker') {
 }
 
 
-
-Jenkins.instance.getItem("github/docker/ansible2.15").disable()
-
 // def jobsList = []
-
 // Jenkins.instance.getAllItems(Job.class).each{
 //   if(it.fullName.contains('github/docker/')) {
 //     println it.fullName
