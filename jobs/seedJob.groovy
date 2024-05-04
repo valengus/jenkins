@@ -11,7 +11,7 @@ folder('github/docker') {
 def folderName = "/github/docker"
 def allJobs = hudson.model.Hudson.getInstance().getAllItems(Job.class).findAll { it.getFullName().contains(folderName) }
 
-println "allJobs"
+println "$allJobs"
 
 
 
