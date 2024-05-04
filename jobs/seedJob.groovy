@@ -8,11 +8,11 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
-def folderName = "/github/docker"
+def folderName = "github/docker"
 def allJobs = hudson.model.Hudson.getInstance().getAllItems(Job.class).findAll { it.getFullName().contains(folderName) }
 
+allJobs.getClass()
 println "$allJobs"
-
 
 
 def dockerBuildJobs = [
