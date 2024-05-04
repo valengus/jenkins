@@ -1,3 +1,5 @@
+import com.cloudbees.hudson.plugins.folder.Folder
+
 folder('github') {
     displayName('github')
     description('Projects stored on github')
@@ -8,18 +10,12 @@ folder('github/docker') {
     description('https://github.com/valengus/docker.git')
 }
 
-def folderName = "github/docker"
-def jobsList = []
 
-Jenkins.instance.getAllItems(Job.class).each{
-  if(it.fullName.contains(folderName)) {
-    jobsList << it.fullName
-  }
-}
+def folderName = "github/docker/"
+def allJobs = hudson.model.Hudson.getInstance().getAllItems(Job.class).findAll { it.getFullName().contains(folderName) }
 
-
-jobsList.getClass()
-println "$jobsList"
+allJobs.getClass()
+println "$allJobs"
 
 
 def dockerBuildJobs = [
