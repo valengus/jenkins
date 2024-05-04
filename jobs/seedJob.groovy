@@ -1,3 +1,5 @@
+import jenkins.model.Jenkins
+
 folder('github') {
     displayName('github')
     description('Projects stored on github')
