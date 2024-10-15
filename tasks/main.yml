@@ -1,0 +1,19 @@
+---
+- name: "Jenkins | Install Java"
+  ansible.builtin.include_tasks: java.yml
+
+- name: "Jenkins | Install Jenkins"
+  ansible.builtin.include_tasks: install.yml
+
+- name: "Jenkins | Config Jenkins"
+  ansible.builtin.include_tasks: config.yml
+
+- name: "Jenkins | Seed job"
+  ansible.builtin.include_tasks: seed.yml
+
+- name: "Jenkins | Config firewald"
+  ansible.builtin.include_tasks: firewalld.yml
+
+- name: "Jenkins | Install Docker"
+  ansible.builtin.include_tasks: docker.yml
+  when: jenkins_install_docker

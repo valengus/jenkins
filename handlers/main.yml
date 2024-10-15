@@ -1,0 +1,14 @@
+---
+- name: Systemd daemon reload
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Jenkins restart
+  service:
+    name: jenkins
+    state: restarted
+
+- name: Docker restart
+  service:
+    name: docker
+    state: restarted

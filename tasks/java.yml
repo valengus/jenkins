@@ -1,0 +1,4 @@
+---
+- name: Jenkins | Install java
+  ansible.builtin.yum:
+    name: "{{ jenkins_java_pkg }}"

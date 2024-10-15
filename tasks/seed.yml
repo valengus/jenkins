@@ -1,0 +1,19 @@
+---
+- name: "Jenkins | Folder for seed job"
+  file:
+    path: "/var/lib/jenkins/init.groovy.d"
+    owner: jenkins
+    group: jenkins
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+
+- name: "Jenkins | Seed job"
+  ansible.builtin.copy:
+    content: "{{ jenkins_seed_job }}"
+    dest: /var/lib/jenkins/init.groovy.d/seed.groovy
+    owner: jenkins
+    group: jenkins
+    mode: '0750'
+  when: jenkins_seed_job is defined
+  notify: 
+    - Jenkins restart

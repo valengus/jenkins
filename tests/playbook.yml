@@ -1,0 +1,82 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+
+  - name: /etc/hosts
+    ansible.builtin.copy:
+      content: |
+        127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+        ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+        {% for item in play_hosts %}
+        {% set short_name = item.split('.') %}
+        {{ hostvars[item]['ansible_host'] }}  {{ item }} {{ short_name[0] }}
+        {% endfor %}
+      dest: /etc/hosts
+
+  - ansible.builtin.include_role:
+      name: jenkins
+    vars:
+      jenkins_plugins:
+      - git
+      - workflow-aggregator
+      - job-dsl
+      - script-security
+      - pipeline-stage-view
+      - git-parameter
+      - prometheus
+      jenkins_config:
+        jenkins:
+          securityRealm:
+            local:
+              allowsSignup: false
+              users:
+                - id: "{{jenkins_admin_user}}"
+                  password: "{{jenkins_admin_user_pass}}"
+          authorizationStrategy: loggedInUsersCanDoAnything
+        security:
+          globalJobDslSecurityConfiguration:
+            useScriptSecurity: false
+        unclassified:
+          globalLibraries:
+            libraries:
+            - defaultVersion: "main"
+              name: "jenkinsSharedLibraries"
+              retriever:
+                modernSCM:
+                  libraryPath: "tests/jenkinsSharedLibraries/"
+                  scm:
+                    git:
+                      remote: "https://github.com/valengus/jenkins.git"
+
+      jenkins_seed_job: |
+        import jenkins.*
+        import jenkins.model.*
+        import hudson.*
+        import hudson.model.*
+        import hudson.plugins.git.*
+        import javaposse.jobdsl.plugin.ExecuteDslScripts
+
+        def matchedJobs = Jenkins.instance.items.findAll { job ->
+          job.name =~ /seedJob/
+        }
+
+        matchedJobs.each { job ->
+          println job.name
+          job.delete()
+        }
+
+        def scm = new GitSCM('https://github.com/valengus/jenkins.git')
+        scm.branches = [new BranchSpec("*/main")]
+
+        job = Jenkins.instance.createProject(FreeStyleProject, 'seedJob')
+        job.setScm scm
+        def builder = new ExecuteDslScripts()
+        builder.setTargets('tests/jobs/**/*.groovy')
+        job.getBuildersList().add(builder)
+
+        job.save()
+
+        build = job.scheduleBuild2(5, new hudson.model.Cause.UserIdCause())
+        build.get()

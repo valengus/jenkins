@@ -1,0 +1,59 @@
+---
+- name: Ensure "EnvironmentFile=-/etc/sysconfig/jenkins" is in section "[Service]" in jenkins.service
+  ini_file:
+    path: /usr/lib/systemd/system/jenkins.service
+    section: "Service"
+    option: "EnvironmentFile"
+    value: "-/etc/sysconfig/jenkins"
+    no_extra_spaces: true
+    mode: "0644"
+  notify: 
+    - Systemd daemon reload
+
+- name: Remove environment options, if present from jenkins.service
+  ini_file:
+    path: /usr/lib/systemd/system/jenkins.service
+    section: "Service"
+    option: "Environment"
+    state: absent
+    mode: "0644"
+    backup: yes
+  notify: 
+    - Systemd daemon reload
+
+- name: Template a file to /etc/sysconfig/jenkins
+  ansible.builtin.template:
+    src: jenkins.env
+    dest: /etc/sysconfig/jenkins
+    owner: root
+    group: root
+    mode: '0640'
+  notify: 
+    - Jenkins restart
+
+- name: "Jenkins | Configure Jenkins"
+  ansible.builtin.copy:
+    dest:  /var/lib/jenkins/jenkins-config-as-code.yaml
+    content: "{{ jenkins_startup_config | combine( jenkins_config , recursive=True) |  to_nice_yaml(indent=2)  }}"
+    owner: jenkins
+    group: jenkins
+    mode: '0640'
+  notify: 
+    - Jenkins restart
+
+- name: Jenkins | Install plugins {{ jenkins_plugins }}
+  shell: java -jar /var/lib/jenkins/jenkins-plugin-manager.jar --war /usr/share/java/jenkins.war -d /var/lib/jenkins/plugins --plugins {{ item }}
+  args:
+    creates: /var/lib/jenkins/plugins/{{ item }}.jpi
+  with_items: "{{ jenkins_plugins }}"
+  notify: 
+    - Jenkins restart
+
+- name: "Flush handlers"
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure service is enabled & started
+  ansible.builtin.service:
+    name: jenkins
+    state: started
+    enabled: true

@@ -1,0 +1,29 @@
+jenkins_version: 2.462.3
+jenkins_java_pkg: java-21-openjdk
+jenkins_repo_url: "http://pkg.jenkins.io/redhat-stable"
+jenkins_install_docker: false
+jenkins_admin_user: "admin"
+jenkins_admin_user_pass: "password"
+jenkins_plugins:
+- git
+- workflow-aggregator
+- job-dsl
+- script-security
+- pipeline-stage-view
+- git-parameter
+- prometheus
+
+jenkins_startup_config:
+  jenkins:
+    securityRealm:
+      local:
+        allowsSignup: false
+        users:
+          - id: "{{ jenkins_admin_user }}"
+            password: "{{ jenkins_admin_user_pass }}"
+    authorizationStrategy: loggedInUsersCanDoAnything
+
+jenkins_config:
+  security:
+    globalJobDslSecurityConfiguration:
+      useScriptSecurity: false

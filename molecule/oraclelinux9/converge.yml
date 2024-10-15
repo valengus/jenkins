@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  become: no
+
+  tasks:
+  
+  - name: "Include jenkins"
+    include_role:
+      name: "jenkins"
