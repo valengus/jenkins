@@ -9,11 +9,7 @@ folder('github/ansibleRoles') {
 }
 
 def jobList = [
-  [
-    jobName:      "jenkins", 
-    url:          "https://github.com/valengus/jenkins.git", 
-    requirements: "requirements.txt"
-  ],
+  [ jobName: "jenkins", url: "https://github.com/valengus/jenkins.git", requirements: "requirements.txt" ],
 ]
 
 jobList.each { job ->

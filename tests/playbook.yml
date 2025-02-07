@@ -36,19 +36,18 @@
         }
 
         matchedJobs.each { job ->
-          println job.name
           job.delete()
         }
 
         def scm = new GitSCM('https://github.com/valengus/jenkins.git')
         scm.branches = [new BranchSpec("*/main")]
 
-        job = Jenkins.instance.createProject(FreeStyleProject, 'seedJob')
-        job.setScm scm
         def builder = new ExecuteDslScripts()
         builder.setTargets('tests/jobs/**/*.groovy')
-        job.getBuildersList().add(builder)
 
+        job = Jenkins.instance.createProject(FreeStyleProject, 'seedJob')
+        job.setScm scm
+        job.getBuildersList().add(builder)
         job.save()
 
         build = job.scheduleBuild2(5, new hudson.model.Cause.UserIdCause())
@@ -65,6 +64,17 @@
       - python3
       - python3-pip
       state: present
+
+  - name: Ensure group "docker" exists
+    ansible.builtin.group:
+      name: docker
+      state: present
+
+  - name: Add the user 'jenkins' to group 'docker'
+    ansible.builtin.user:
+      name: jenkins
+      groups: docker
+      append: yes
 
   - name: Add docker repository
     ansible.builtin.yum_repository:
@@ -87,18 +97,8 @@
       name: 
       - python3-docker
 
-  - name: Add the user 'jenkins' to group 'docker'
-    ansible.builtin.user:
-      name: jenkins
-      groups: docker
-      append: yes
-
-  - name: Systemd daemon reload
-    ansible.builtin.systemd:
-      daemon_reload: true
-
   - name: Ensure docker service is enabled & started
     ansible.builtin.service:
       name: docker
-      state: restarted
+      state: started
       enabled: true
