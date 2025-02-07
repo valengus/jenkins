@@ -1,5 +1,5 @@
 ---
-- name: "Jenkins | Folder for seed job"
+- name: "Jenkins | Folder for groovy starup scripts"
   file:
     path: "/var/lib/jenkins/init.groovy.d"
     owner: jenkins
@@ -7,13 +7,13 @@
     state: directory
     mode: u=rwx,g=rx,o=rx
 
-- name: "Jenkins | Seed job"
+- name: "Jenkins | Groovy starup script"
   ansible.builtin.copy:
-    content: "{{ jenkins_seed_job }}"
+    content: "{{ jenkins_groovy_starup_script }}"
     dest: /var/lib/jenkins/init.groovy.d/seed.groovy
     owner: jenkins
     group: jenkins
     mode: '0750'
-  when: jenkins_seed_job is defined
+  when: jenkins_groovy_starup_script is defined
   notify: 
     - Jenkins restart

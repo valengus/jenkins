@@ -8,7 +8,3 @@
     name: jenkins
     state: restarted
 
-- name: Docker restart
-  service:
-    name: docker
-    state: restarted
