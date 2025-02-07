@@ -33,6 +33,10 @@
 
         def matchedJobs = Jenkins.instance.items.findAll { job ->
           job.name =~ /seedJob/
+        }
+
+        matchedJobs.each { job ->
+          println job.name
           job.delete()
         }
 
@@ -88,6 +92,10 @@
       name: jenkins
       groups: docker
       append: yes
+
+  - name: Systemd daemon reload
+    ansible.builtin.systemd:
+      daemon_reload: true
 
   - name: Ensure docker service is enabled & started
     ansible.builtin.service:
