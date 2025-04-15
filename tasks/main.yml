@@ -14,3 +14,6 @@
 
 - name: Jenkins | Install plugins
   ansible.builtin.include_tasks: plugins.yml
+
+- name: Jenkins | Info
+  ansible.builtin.include_tasks: info.yml
