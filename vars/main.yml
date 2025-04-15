@@ -1,0 +1,11 @@
+jenkins_groovy_first_start_script: |
+  import jenkins.model.*
+  import hudson.security.*
+
+  def instance = Jenkins.getInstance()
+  def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+  
+  hudsonRealm.createAccount('{{ jenkins_admin_user }}', '{{ jenkins_admin_user_pass }}')
+  instance.setSecurityRealm(hudsonRealm)
+  
+  instance.save()

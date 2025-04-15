@@ -18,3 +18,4 @@
 - name: Jenkins | Install jenkins
   ansible.builtin.yum:
     name: jenkins-{{ jenkins_version }}
+  register: jenkins_installed

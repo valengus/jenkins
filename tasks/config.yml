@@ -40,14 +40,16 @@
     state: directory
     mode: u=rwx,g=rx,o=rx
 
-- name: Jenkins | Groovy starup script
+- name: Jenkins first start script
   ansible.builtin.copy:
-    content: "{{ jenkins_groovy_starup_script }}"
-    dest: /var/lib/jenkins/init.groovy.d/starup.groovy
+    content: "{{ jenkins_groovy_first_start_script }}"
+    dest: /var/lib/jenkins/init.groovy.d/firstStart.groovy
     owner: jenkins
     group: jenkins
     mode: '0750'
-  when: jenkins_groovy_starup_script is defined
+  when: jenkins_installed.changed
+  notify: 
+    - Remove first start script
 
 - name: Jenkins | Ensure service is enabled & started
   ansible.builtin.service:

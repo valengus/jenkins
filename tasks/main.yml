@@ -8,9 +8,9 @@
 - name: Jenkins | Config Jenkins
   ansible.builtin.include_tasks: config.yml
 
-- name: Jenkins | Install plugins
-  ansible.builtin.include_tasks: plugins.yml
-
 - name: Jenkins | Install configuration-as-code plugin
   ansible.builtin.include_tasks: configuration-as-code.yml
   when: jenkins_configuration_as_code['install']
+
+- name: Jenkins | Install plugins
+  ansible.builtin.include_tasks: plugins.yml
