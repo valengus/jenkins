@@ -6,99 +6,48 @@
 
   - ansible.builtin.include_role:
       name: jenkins
-    vars:
-      jenkins_config:
-        security:
-          globalJobDslSecurityConfiguration:
-            useScriptSecurity: false
-        unclassified:
-          globalLibraries:
-            libraries:
-            - defaultVersion: "main"
-              name: "jenkinsSharedLibraries"
-              retriever:
-                modernSCM:
-                  libraryPath: "tests/jenkinsSharedLibraries/"
-                  scm:
-                    git:
-                      remote: "https://github.com/valengus/jenkins.git"
 
-      jenkins_groovy_starup_script: |
-        import jenkins.*
-        import jenkins.model.*
-        import hudson.*
-        import hudson.model.*
-        import hudson.plugins.git.*
-        import javaposse.jobdsl.plugin.ExecuteDslScripts
+  # - name: Install epel repo
+  #   ansible.builtin.dnf:
+  #     name: epel-release
 
-        def matchedJobs = Jenkins.instance.items.findAll { job ->
-          job.name =~ /seedJob/
-        }
+  # - name: Install additional pkgs
+  #   ansible.builtin.dnf:
+  #     name: 
+  #     - git
+  #     - python3
+  #     - python3-pip
+  #     state: present
 
-        matchedJobs.each { job ->
-          job.delete()
-        }
+  # - name: Ensure group "docker" exists
+  #   ansible.builtin.group:
+  #     name: docker
+  #     state: present
 
-        def scm = new GitSCM('https://github.com/valengus/jenkins.git')
-        scm.branches = [new BranchSpec("*/main")]
+  # - name: Add the user 'jenkins' to group 'docker'
+  #   ansible.builtin.user:
+  #     name: jenkins
+  #     groups: docker
+  #     append: yes
 
-        def builder = new ExecuteDslScripts()
-        builder.setTargets('tests/jobs/**/*.groovy')
+  # - name: Add docker repository
+  #   ansible.builtin.yum_repository:
+  #     name: "docker-ce-stable"
+  #     description: "Docker CE Stable - $basearch"
+  #     baseurl: "https://download.docker.com/linux/centos/$releasever/$basearch/stable"
+  #     state: "{{ item.state | default('present') }}"
+  #     gpgkey: "https://download.docker.com/linux/centos/gpg"
+  #     gpgcheck: true
 
-        job = Jenkins.instance.createProject(FreeStyleProject, 'seedJob')
-        job.setScm scm
-        job.getBuildersList().add(builder)
-        job.save()
+  # - name: Install Docker CE
+  #   ansible.builtin.dnf:
+  #     name: 
+  #     - docker-ce 
+  #     - docker-ce-cli  
+  #     - containerd.io
 
-        build = job.scheduleBuild2(5, new hudson.model.Cause.UserIdCause())
-        build.get()
-
-  - name: Install epel repo
-    ansible.builtin.dnf:
-      name: epel-release
-
-  - name: Install additional pkgs
-    ansible.builtin.dnf:
-      name: 
-      - git
-      - python3
-      - python3-pip
-      state: present
-
-  - name: Ensure group "docker" exists
-    ansible.builtin.group:
-      name: docker
-      state: present
-
-  - name: Add the user 'jenkins' to group 'docker'
-    ansible.builtin.user:
-      name: jenkins
-      groups: docker
-      append: yes
-
-  - name: Add docker repository
-    ansible.builtin.yum_repository:
-      name: "docker-ce-stable"
-      description: "Docker CE Stable - $basearch"
-      baseurl: "https://download.docker.com/linux/centos/$releasever/$basearch/stable"
-      state: "{{ item.state | default('present') }}"
-      gpgkey: "https://download.docker.com/linux/centos/gpg"
-      gpgcheck: true
-
-  - name: Install Docker CE
-    ansible.builtin.dnf:
-      name: 
-      - docker-ce 
-      - docker-ce-cli  
-      - containerd.io
-
-  - name: Install python3-docker
-    ansible.builtin.dnf:
-      name: 
-      - python3-docker
-
-  - name: Ensure docker service is enabled & started
-    ansible.builtin.service:
-      name: docker
-      state: started
-      enabled: true
+  # - name: Ensure docker service is enabled & started
+  #   ansible.builtin.service:
+  #     name: docker
+  #     state: started
+  #     enabled: true

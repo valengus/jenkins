@@ -1,0 +1,21 @@
+---
+- name: Install configuration-as-code plugin
+  community.general.jenkins_plugin:
+    name: "configuration-as-code"
+    version: "{{ jenkins_configuration_as_code['version'] | default(omit) }}"
+    url_username: "{{ jenkins_admin_user }}"
+    url_password: "{{ jenkins_admin_user_pass }}"
+  when: 
+    - "'configuration-as-code' not in (jenkins_plugins | map(attribute='name') | list)"
+  notify: 
+    - Jenkins restart
+
+- name: "Jenkins | Configure Jenkins, configuration-as-code plugin"
+  ansible.builtin.copy:
+    dest:  "{{ jenkins_configuration_as_code['local_path'] }}"
+    content: "{{ jenkins_configuration_as_code['jenkins_cac_config'] | to_nice_yaml(indent=2)  }}"
+    owner: jenkins
+    group: jenkins
+    mode: '0640'
+  notify: 
+    - Jenkins restart

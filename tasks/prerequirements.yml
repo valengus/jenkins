@@ -2,3 +2,7 @@
 - name: Jenkins | Install java
   ansible.builtin.yum:
     name: "{{ jenkins_java_pkg }}"
+
+- name: Jenkins | Install git
+  ansible.builtin.dnf:
+    name: git

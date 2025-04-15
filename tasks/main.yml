@@ -1,16 +1,16 @@
 ---
-- name: "Jenkins | Install Java"
-  ansible.builtin.include_tasks: java.yml
+- name: Jenkins | Install pre requirements
+  ansible.builtin.include_tasks: prerequirements.yml
 
-- name: "Jenkins | Install Jenkins"
+- name: Jenkins | Install Jenkins
   ansible.builtin.include_tasks: install.yml
 
-- name: "Jenkins | Config Jenkins"
+- name: Jenkins | Config Jenkins
   ansible.builtin.include_tasks: config.yml
 
-- name: "Jenkins | Groovy script"
-  ansible.builtin.include_tasks: groovy.yml
+- name: Jenkins | Install plugins
+  ansible.builtin.include_tasks: plugins.yml
 
-# - name: "Jenkins | Install Docker"
-#   ansible.builtin.include_tasks: docker.yml
-#   when: jenkins_install_docker
+- name: Jenkins | Install configuration-as-code plugin
+  ansible.builtin.include_tasks: configuration-as-code.yml
+  when: jenkins_configuration_as_code['install']

@@ -1,8 +1,4 @@
 ---
-- name: Jenkins | Install git
-  ansible.builtin.dnf:
-    name: git
-
 - name: Jenkins | Copy Jenkins repo GPG key
   ansible.builtin.copy:
     src: jenkins.io-2023.key
@@ -22,22 +18,3 @@
 - name: Jenkins | Install jenkins
   ansible.builtin.yum:
     name: jenkins-{{ jenkins_version }}
-
-- name: Jenkins | Download jenkins-plugin-manager
-  get_url:
-    url: "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.13.0/jenkins-plugin-manager-2.13.0.jar"
-    dest: "/var/lib/jenkins/jenkins-plugin-manager.jar"
-
-- name: Jenkins | Ensure plugins folder exists.
-  file:
-    path: "/var/lib/jenkins/plugins"
-    owner: jenkins
-    group: jenkins
-    state: directory
-    mode: u=rwx,g=rx,o=rx
-
-- name: Jenkins | Install configuration-as-code plugin
-  ansible.builtin.shell: java -jar /var/lib/jenkins/jenkins-plugin-manager.jar --war /usr/share/java/jenkins.war -d /var/lib/jenkins/plugins --plugins configuration-as-code
-  args:
-    creates: /var/lib/jenkins/plugins/configuration-as-code.jpi
-  register: configuration_as_code_plugin

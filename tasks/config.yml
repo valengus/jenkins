@@ -1,5 +1,5 @@
 ---
-- name: Ensure "EnvironmentFile=-/etc/sysconfig/jenkins" is in section "[Service]" in jenkins.service
+- name: Jenkins | Ensure "EnvironmentFile=-/etc/sysconfig/jenkins" is in section "[Service]" in jenkins.service
   ini_file:
     path: /usr/lib/systemd/system/jenkins.service
     section: "Service"
@@ -10,7 +10,7 @@
   notify: 
     - Systemd daemon reload
 
-- name: Remove environment options, if present from jenkins.service
+- name: Jenkins | Remove environment options, if present from jenkins.service
   ini_file:
     path: /usr/lib/systemd/system/jenkins.service
     section: "Service"
@@ -21,26 +21,35 @@
   notify: 
     - Systemd daemon reload
 
-- name: Template a file to /etc/sysconfig/jenkins
+- name: Jenkins | Template a file to /etc/sysconfig/jenkins
   ansible.builtin.template:
-    src: jenkins.env
+    src: jenkins.env.j2
     dest: /etc/sysconfig/jenkins
     owner: root
     group: root
     mode: '0640'
   notify: 
     - Jenkins restart
+    - Systemd daemon reload
 
-- name: "Jenkins | Configure Jenkins"
-  ansible.builtin.copy:
-    dest:  /var/lib/jenkins/jenkins-config-as-code.yaml
-    content: "{{ jenkins_startup_config | to_nice_yaml(indent=2)  }}"
+- name: Jenkins | Folder for groovy starup scripts
+  file:
+    path: "/var/lib/jenkins/init.groovy.d"
     owner: jenkins
     group: jenkins
-    mode: '0640'
-  when: configuration_as_code_plugin.changed
+    state: directory
+    mode: u=rwx,g=rx,o=rx
 
-- name: Ensure service is enabled & started
+- name: Jenkins | Groovy starup script
+  ansible.builtin.copy:
+    content: "{{ jenkins_groovy_starup_script }}"
+    dest: /var/lib/jenkins/init.groovy.d/starup.groovy
+    owner: jenkins
+    group: jenkins
+    mode: '0750'
+  when: jenkins_groovy_starup_script is defined
+
+- name: Jenkins | Ensure service is enabled & started
   ansible.builtin.service:
     name: jenkins
     state: started
@@ -52,41 +61,6 @@
     status_code: 200
     timeout: 5
   register: _result
-  retries: 60
-  delay: 5
-  until: "'status' in _result and _result['status'] == 200"
-
-- name: Install plugins
-  community.general.jenkins_plugin:
-    name: "{{ item.name }}"
-    version: "{{ item.version | default(omit) }}"
-    state: "{{ item.state | default(omit) }}"
-    url_username: "{{ jenkins_admin_user }}"
-    url_password: "{{ jenkins_admin_user_pass }}"
-  register: jenkins_plugins_install
-  with_items: "{{ jenkins_plugins }}"
-  notify: 
-    - Jenkins restart
-
-- name: "Jenkins | Configure Jenkins"
-  ansible.builtin.copy:
-    dest:  /var/lib/jenkins/jenkins-config-as-code.yaml
-    content: "{{ jenkins_startup_config | combine( jenkins_config , recursive=True) |  to_nice_yaml(indent=2)  }}"
-    owner: jenkins
-    group: jenkins
-    mode: '0640'
-  notify: 
-    - Jenkins restart
-
-- name: "Flush handlers"
-  ansible.builtin.meta: flush_handlers
-
-- name: Jenkins | Wait for Jenkins to start up
-  ansible.builtin.uri:
-    url: http://localhost:8080
-    status_code: 200
-    timeout: 5
-  register: _result
-  retries: 60
+  retries: 20
   delay: 5
   until: "'status' in _result and _result['status'] == 200"

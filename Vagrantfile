@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
 
   config.vm.define "master" do |config|
-    config.vm.hostname = "jenkins-master"
+    config.vm.hostname = "jenkins"
     config.vm.box      = "oraclelinux/9"
     config.vm.box_url  = "https://oracle.github.io/vagrant-projects/boxes/oraclelinux/9.json"
     config.vm.provider :libvirt do |libvirt|
@@ -25,9 +25,6 @@ Vagrant.configure("2") do |config|
       ansible.become             = true
       ansible.playbook           = "tests/playbook.yml"  
       ansible.limit              = "all"
-      ansible.groups = {
-        "jenkins" => ["master" ],
-      }
     end
   end
 
