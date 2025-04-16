@@ -40,16 +40,32 @@
     state: directory
     mode: u=rwx,g=rx,o=rx
 
-- name: Jenkins first start script
+- name: Jenkins | Check Jenkins auth
+  ansible.builtin.uri:
+    headers:
+      Content-Type: "application/json"
+    url: "http://localhost:8080/whoAmI/api/json"
+    force_basic_auth: yes
+    user: "{{ jenkins_admin_user }}"
+    password: "{{ jenkins_admin_user_pass }}"
+    return_content: yes
+    status_code: 200
+  register: jenkins_auth_result
+  ignore_errors: yes
+
+- name: Jenkins | Jenkins first start script
   ansible.builtin.copy:
-    content: "{{ jenkins_groovy_first_start_script }}"
+    content: "{{ jenkins_auth_init_script }}"
     dest: /var/lib/jenkins/init.groovy.d/firstStart.groovy
     owner: jenkins
     group: jenkins
     mode: '0750'
-  when: jenkins_installed.changed
+  when: jenkins_auth_result.status != 200
   notify: 
-    - Remove first start script
+    - Jenkins restart
+
+- name: Flush handlers
+  meta: flush_handlers
 
 - name: Jenkins | Ensure service is enabled & started
   ansible.builtin.service:
@@ -66,3 +82,8 @@
   retries: 20
   delay: 5
   until: "'status' in _result and _result['status'] == 200"
+
+- name: Jenkins | Remove first start script
+  file:
+    path: /var/lib/jenkins/init.groovy.d/firstStart.groovy
+    state: absent

@@ -12,10 +12,21 @@
     name: "jenkins"
     description: "Jenkins-stable"
     baseurl: "{{ jenkins_repo_url }}"
-    state: "{{ item.state | default('present') }}"
+    state: present
     gpgkey: "file:///etc/pki/rpm-gpg/jenkins.io-2023.key"
 
 - name: Jenkins | Install jenkins
   ansible.builtin.yum:
     name: jenkins-{{ jenkins_version }}
-  register: jenkins_installed
+
+- name: Jenkins | Ensure group "jenkins" exists
+  ansible.builtin.group:
+    name: jenkins
+    state: present
+
+- name: Jenkins | Add to user 'jenkins' bash shell
+  ansible.builtin.user:
+    name: jenkins
+    groups: jenkins
+    shell: /bin/bash
+    append: yes

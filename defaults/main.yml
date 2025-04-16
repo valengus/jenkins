@@ -2,16 +2,18 @@ jenkins_java_pkg: java-21-openjdk
 jenkins_repo_url: "http://pkg.jenkins.io/redhat-stable"
 jenkins_version: 2.492.3-1.1
 
+jenkins_url: "http://{{ ansible_default_ipv4.address }}:8080/"
 jenkins_admin_user: "admin"
 jenkins_admin_user_pass: "password"
 
 jenkins_plugins:
-- name: git
 - name: job-dsl
 - name: workflow-aggregator
-- name: script-security
 - name: pipeline-stage-view
+- name: git
 - name: git-parameter
+- name: docker-plugin
+- name: script-security
 
 jenkins_configuration_as_code:
   install: true
@@ -28,3 +30,6 @@ jenkins_configuration_as_code:
     security:
       globalJobDslSecurityConfiguration:
         useScriptSecurity: false
+    unclassified:
+      location:
+        url: "http://{{ ansible_default_ipv4.address }}:8080/"

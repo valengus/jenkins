@@ -2,6 +2,6 @@
 - name: Info
   debug:
     msg: 
-    - Master url - http://{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}:8080
+    - URL - {{ jenkins_url }}
     - Admin user login - {{ jenkins_admin_user }}
     - Admin user password - {{ jenkins_admin_user_pass }}

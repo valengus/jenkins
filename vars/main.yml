@@ -1,4 +1,4 @@
-jenkins_groovy_first_start_script: |
+jenkins_auth_init_script: |
   import jenkins.model.*
   import hudson.security.*
 

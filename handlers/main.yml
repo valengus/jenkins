@@ -7,8 +7,3 @@
   service:
     name: jenkins
     state: restarted
-
-- name: Remove first start script
-  file:
-    path: /var/lib/jenkins/init.groovy.d/firstStart.groovy
-    state: absent
