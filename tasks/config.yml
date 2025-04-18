@@ -1,0 +1,79 @@
+---
+- name: Jenkins | Ensure "EnvironmentFile=-/etc/sysconfig/jenkins" is in section "[Service]" in jenkins.service
+  community.general.ini_file:
+    path: /usr/lib/systemd/system/jenkins.service
+    section: "Service"
+    option: "EnvironmentFile"
+    value: "-/etc/sysconfig/jenkins"
+    no_extra_spaces: true
+    mode: "0644"
+  notify:
+    - Systemd daemon reload
+
+- name: Jenkins | Remove environment options, if present from jenkins.service
+  community.general.ini_file:
+    path: /usr/lib/systemd/system/jenkins.service
+    section: "Service"
+    option: "Environment"
+    state: absent
+    mode: "0644"
+    backup: true
+  notify:
+    - Systemd daemon reload
+
+- name: Jenkins | Template a file to /etc/sysconfig/jenkins
+  ansible.builtin.template:
+    src: jenkins.env.j2
+    dest: /etc/sysconfig/jenkins
+    owner: root
+    group: root
+    mode: '0640'
+  notify:
+    - Jenkins restart
+    - Systemd daemon reload
+
+- name: Jenkins | Folder for groovy starup scripts
+  ansible.builtin.file:
+    path: "{{ jenkins_home }}/init.groovy.d"
+    owner: jenkins
+    group: jenkins
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+
+- name: Jenkins | Check Jenkins auth
+  ansible.builtin.uri:
+    headers:
+      Content-Type: "application/json"
+    url: "http://localhost:{{ jenkins_port }}/whoAmI/api/json"
+    force_basic_auth: true
+    user: "{{ jenkins_admin_user }}"
+    password: "{{ jenkins_admin_user_pass }}"
+    return_content: true
+    status_code: 200
+  register: jenkins_auth_result
+  ignore_errors: true
+
+- name: Jenkins | Jenkins first start script
+  ansible.builtin.copy:
+    content: "{{ jenkins_auth_init_script }}"
+    dest: "{{ jenkins_home }}/init.groovy.d/firstStart.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: '0750'
+  when: jenkins_auth_result.status != 200
+  notify:
+    - Jenkins restart
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Jenkins | Ensure service is enabled & started
+  ansible.builtin.service:
+    name: jenkins
+    state: started
+    enabled: true
+
+- name: Jenkins | Remove first start script
+  ansible.builtin.file:
+    path: "{{ jenkins_home }}/init.groovy.d/firstStart.groovy"
+    state: absent

@@ -1,0 +1,34 @@
+---
+- name: Jenkins | Copy Jenkins repo GPG key
+  ansible.builtin.copy:
+    src: jenkins.io-2023.key
+    dest: "/etc/pki/rpm-gpg/jenkins.io-2023.key"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Jenkins | Add Jenkins repository
+  ansible.builtin.yum_repository:
+    name: "jenkins"
+    description: "Jenkins stable"
+    baseurl: "{{ jenkins_repo_url }}"
+    state: present
+    gpgkey: "file:///etc/pki/rpm-gpg/jenkins.io-2023.key"
+
+- name: Jenkins | Install jenkins
+  ansible.builtin.dnf:
+    name: "jenkins-{{ jenkins_version }}*"
+  when: jenkins_version is defined
+
+- name: Jenkins | Install jenkins
+  ansible.builtin.dnf:
+    name: jenkins
+  when: jenkins_version is not defined
+
+- name: Jenkins | Ensure log folder exists
+  ansible.builtin.file:
+    path: "{{ jenkins_log_file | dirname }}"
+    owner: jenkins
+    group: jenkins
+    state: directory
+    mode: u=rwx,g=rx,o=rx

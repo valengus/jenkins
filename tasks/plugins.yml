@@ -1,0 +1,11 @@
+---
+- name: Jenkins | Install plugins
+  community.general.jenkins_plugin:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    url_username: "{{ jenkins_admin_user }}"
+    url_password: "{{ jenkins_admin_user_pass }}"
+  with_items: "{{ jenkins_plugins }}"
+  notify:
+    - Jenkins restart

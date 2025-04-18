@@ -1,0 +1,8 @@
+---
+- name: Execute groovy scripts
+  community.general.jenkins_script:
+    script: "{{ item.script }}"
+    user: "{{ jenkins_admin_user }}"
+    password: "{{ jenkins_admin_user_pass }}"
+    url: http://localhost:8080
+  with_items: "{{ jenkins_scripts }}"

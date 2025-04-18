@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+
+  tasks:
+
+  - name: Check if Jenkins service is running
+    ansible.builtin.service:
+      name: jenkins
+      state: started
+      enabled: true
+    check_mode: true
+    register: service
+    failed_when: (service is changed) or (service is failed)
+
+  - name: Check Jenkins auth
+    ansible.builtin.uri:
+      headers:
+        Content-Type: "application/json"
+      url: "http://localhost:{{ jenkins_port }}/whoAmI/api/json"
+      force_basic_auth: yes
+      user: "{{ jenkins_admin_user }}"
+      password: "{{ jenkins_admin_user_pass }}"
+      return_content: yes
+      status_code: 200
+    register: jenkins_auth_result

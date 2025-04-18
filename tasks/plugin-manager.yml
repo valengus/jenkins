@@ -1,0 +1,17 @@
+---
+- name: Jenkins | Download jenkins-plugin-manager
+  ansible.builtin.get_url:
+    url: "{{ jenkins_plugin_manager_download_url }}/{{jenkins_plugin_manager_ver}}/jenkins-plugin-manager-{{jenkins_plugin_manager_ver}}.jar"
+    dest: "{{ jenkins_home }}/jenkins-plugin-manager.jar"
+    checksum: "sha256:{{ jenkins_plugin_manager_download_url }}/{{jenkins_plugin_manager_ver}}/jenkins-plugin-manager-{{jenkins_plugin_manager_ver}}.jar.sha256"
+    owner: jenkins
+    group: root
+    mode: '0550'
+
+- name: Jenkins | Ensure plugins folder exists.
+  ansible.builtin.file:
+    path: "{{ jenkins_home }}/plugins"
+    owner: jenkins
+    group: jenkins
+    state: directory
+    mode: u=rwx,g=rx,o=rx
