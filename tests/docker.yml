@@ -1,0 +1,41 @@
+---
+- name: Install python3 & pip
+  ansible.builtin.dnf:
+    name: 
+    - python3
+    - python3-pip
+    state: present
+
+- name: Ensure "docker" group exists
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Add jenkins user to 'docker' group with bash shell
+  ansible.builtin.user:
+    name: jenkins
+    groups: docker
+    shell: /bin/bash
+    append: yes
+
+- name: Add Docker CE repository (stable)
+  ansible.builtin.yum_repository:
+    name: "docker-ce-stable"
+    description: "Docker CE Stable - $basearch"
+    baseurl: "https://download.docker.com/linux/centos/$releasever/$basearch/stable"
+    state: "{{ item.state | default('present') }}"
+    gpgkey: "https://download.docker.com/linux/centos/gpg"
+    gpgcheck: true
+
+- name: Install Docker CE
+  ansible.builtin.dnf:
+    name: 
+    - docker-ce 
+    - docker-ce-cli  
+    - containerd.io
+
+- name: Ensure docker service is enabled & started
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true

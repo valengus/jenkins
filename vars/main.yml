@@ -1,0 +1,10 @@
+jenkins_log_file: /var/log/jenkins/jenkins.log
+
+jenkins_auth_init_script: |
+  import jenkins.model.*
+  import hudson.security.*
+  def instance = Jenkins.getInstance()
+  def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+  hudsonRealm.createAccount('{{ jenkins_admin_user }}', '{{ jenkins_admin_user_pass }}')
+  instance.setSecurityRealm(hudsonRealm)
+  instance.save()

@@ -1,0 +1,25 @@
+---
+- name: Jenkins | Install pre requirements
+  ansible.builtin.include_tasks: prerequirements.yml
+
+- name: Jenkins | Install Jenkins
+  ansible.builtin.include_tasks: install.yml
+
+- name: Jenkins | Config Jenkins
+  ansible.builtin.include_tasks: config.yml
+
+- name: Jenkins | Install jenkins-plugin-manager
+  ansible.builtin.include_tasks: plugin-manager.yml
+
+- name: Jenkins | Install configuration-as-code plugin
+  ansible.builtin.include_tasks: configuration-as-code.yml
+  when: jenkins_casc_install
+
+- name: Jenkins | Install plugins
+  ansible.builtin.include_tasks: plugins.yml
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Jenkins | Execute groovy scripts
+  ansible.builtin.include_tasks: groovy.yml

@@ -1,0 +1,7 @@
+requests==2.31.0
+ansible-core==2.15.13
+ansible==8.7.0
+ansible-lint
+molecule==6.0.2
+molecule-docker==2.1.0
+jmespath

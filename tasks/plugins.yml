@@ -1,0 +1,52 @@
+---
+- name: Jenkins | Get list of installed plugins
+  ansible.builtin.uri:
+    headers:
+      Content-Type: "application/json"
+    url: "http://localhost:{{ jenkins_port }}/pluginManager/api/json?depth=1"
+    force_basic_auth: true
+    user: "{{ jenkins_admin_user }}"
+    password: "{{ jenkins_admin_user_pass }}"
+    return_content: true
+    status_code: 200
+  register: jenkins_plugin_response
+
+- name: Jenkins | Extract plugin list
+  ansible.builtin.set_fact:
+    jenkins_plugins_installed: "{{ jenkins_plugin_response.json.plugins | json_query('[].{name: shortName, version: version}') }}"
+    jenkins_plugins_to_install: []
+
+- name: Jenkins | Add plugin without version to install list if not installed
+  ansible.builtin.set_fact:
+    jenkins_plugins_to_install: "{{ jenkins_plugins_to_install + [item] }}"
+  when:
+    - item.version is not defined
+    - item.name not in ( jenkins_plugins_installed | map(attribute='name') | list )
+  with_items: "{{ jenkins_plugins }}"
+
+- name: Jenkins | Add plugin with specific version to install list if not installed
+  ansible.builtin.set_fact:
+    jenkins_plugins_to_install: "{{ jenkins_plugins_to_install + [item] }}"
+  when:
+    - item.version is defined
+    - (jenkins_plugins_installed | selectattr('name', 'equalto', item.name) | selectattr('version', 'equalto', item.version) | list | length) == 0
+  with_items: "{{ jenkins_plugins }}"
+
+- name: Jenkins | Display list of plugins to install
+  ansible.builtin.debug:
+    msg: "{{ jenkins_plugins_to_install }}"
+
+- name: Jenkins | Format plugin list as string
+  ansible.builtin.set_fact:
+    jenkins_plugins_string: >-
+      {% for plugin in jenkins_plugins_to_install %}{{ plugin.name }}{% if plugin.version is defined %}:{{ plugin.version }}{% endif %} {% endfor %}
+  when: jenkins_plugins_to_install | length > 0
+
+- name: Jenkins | Install plugins over jenkins plugin manager
+  ansible.builtin.shell: java -jar {{ jenkins_home }}/jenkins-plugin-manager.jar --war /usr/share/java/jenkins.war -d {{ jenkins_home }}/plugins --plugins {{ jenkins_plugins_string }}
+  when: jenkins_plugins_to_install | length > 0
+  changed_when: true
+  args:
+    executable: /bin/bash
+  notify:
+    - Jenkins restart

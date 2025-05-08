@@ -1,0 +1,64 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+
+  - name: Install docker
+    ansible.builtin.include_tasks: docker.yml
+
+  - ansible.builtin.include_role:
+      name: jenkins
+    vars:
+      jenkins_java_pkg: java-21-openjdk
+      jenkins_version: 2.492.3
+      jenkins_admin_user: "admin"
+      jenkins_admin_user_pass: "password"
+      jenkins_casc_install: true
+      jenkins_plugins:
+      - name: script-security
+      - name: configuration-as-code
+      - name: workflow-aggregator
+      - name: job-dsl
+        version: "1.92"
+      - name: pipeline-stage-view
+      - name: git
+      - name: git-parameter
+      - name: docker-workflow
+      jenkins_scripts:
+      - script: |
+          import javaposse.jobdsl.dsl.*
+          import javaposse.jobdsl.plugin.*
+          def dslScript = '''
+          folder("ansible-roles") {
+            displayName("ansible-roles")
+          }
+          multibranchPipelineJob("ansible-roles/jenkins") {
+            branchSources {
+              git {
+                id("github-jenkins")
+                remote("https://github.com/valengus/jenkins.git")
+                includes("*")
+                excludes("")
+              }
+            }
+            orphanedItemStrategy {
+              discardOldItems {
+                numToKeep(5)
+              }
+            }
+            factory {
+              workflowBranchProjectFactory {
+                scriptPath("Jenkinsfile")
+              }
+            }
+            triggers {
+              periodicFolderTrigger {
+                interval("5")
+              }
+            }
+          }
+          '''
+          def jobManagement = new JenkinsJobManagement( System.out, [:], new File('.') )
+          def loader = new DslScriptLoader(jobManagement)
+          loader.runScript(dslScript)
