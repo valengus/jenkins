@@ -11,7 +11,7 @@
       name: jenkins
     vars:
       jenkins_java_pkg: java-21-openjdk
-      jenkins_version: 2.492.3
+      jenkins_version: 2.516
       jenkins_admin_user: "admin"
       jenkins_admin_user_pass: "password"
       jenkins_casc_install: true
@@ -20,7 +20,7 @@
       - name: configuration-as-code
       - name: workflow-aggregator
       - name: job-dsl
-        version: "1.92"
+        version: "1.93"
       - name: pipeline-stage-view
       - name: git
       - name: git-parameter

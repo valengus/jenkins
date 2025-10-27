@@ -4,12 +4,12 @@
 Vagrant.configure("2") do |config|
 
   vagrant_root = File.dirname(__FILE__)
-  ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/..:#{vagrant_root}/tests/roles"
+  ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/.."
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
 
   config.vm.define "jenkins-master" do |config|
     config.vm.hostname = "jenkins-master"
-    config.vm.box      = "oraclelinux/9"
+    config.vm.box      = "generic/oracle9"
     config.vm.box_url  = "https://oracle.github.io/vagrant-projects/boxes/oraclelinux/9.json"
     config.vm.provider :libvirt do |libvirt|
       libvirt.cpus                      = 2
